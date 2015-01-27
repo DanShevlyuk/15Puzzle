@@ -1,0 +1,9 @@
+# Intellij
+.idea/workspace.xml
+.idea/tasks.xml
+*.iws
+out/
+
+#OS X stuff
+.DS_Store
+.Trashes
