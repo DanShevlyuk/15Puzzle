@@ -4,11 +4,8 @@ public class FPCell {
     private int value;
     private boolean isEmpty;
 
-    private FPPuzzle puzzle;
-
-    public FPCell(int value, FPPuzzle puzzle) {
+    public FPCell(int value) {
         this.value = value;
-        this.puzzle = puzzle;
         isEmpty = value == -1;
     }
 
