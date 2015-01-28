@@ -14,9 +14,9 @@ public class FPPuzzle implements Iterable<FPCell> {
     private static final Random RANDOM = new Random();
 
     public FPPuzzle() {
-        cells = new ArrayList<FPCell>();
+        cells = new ArrayList<>();
 
-        Set<Integer> usedNumbers = new HashSet<Integer>();
+        Set<Integer> usedNumbers = new HashSet<>();
         cells.add(new FPCell(-1));
 
         int i = 1;
