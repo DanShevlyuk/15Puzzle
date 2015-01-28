@@ -14,9 +14,11 @@ public class FPPuzzle implements Iterable<FPCell> {
     private static final Random RANDOM = new Random();
 
     public FPPuzzle() {
-        cells = new ArrayList<>();
+        //TODO: init cells randomly
+        //TODO: init emptyCellIndex
+        cells = new ArrayList<FPCell>();
 
-        Set<Integer> usedNumbers = new HashSet<>();
+        Set<Integer> usedNumbers = new HashSet<Integer>();
         cells.add(new FPCell(-1));
 
         int i = 1;
@@ -35,11 +37,17 @@ public class FPPuzzle implements Iterable<FPCell> {
         cells.set(0, cell);
     }
 
+    //TODO: написать геттер и сеттер (нужен ли он?) для emptyCellIndex
+
     /*
-     * FPCell вызывает этот метод, когда на нее кликнули
+     *  Вызывается после того, как FPPuzzlePanel обработал нажатие
+     *  мышкой по клетке и определил её индекс.
+     *  Метод двигает клетку, если это возможно и возвращает
+     *  boolean, который говорит о том, перепестилась клетка или нет.
      *
      * return true, когда все ок и false, когда передивнуть не удалось
      */
+    //TODO: имплементировать moveMePlease
     public boolean moveMePlease(int index) {
         //проверить можно ли двигать
         // подвинуть, если можно и вернуть true
