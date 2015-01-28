@@ -1,16 +1,30 @@
 package model;
 
-/**
- * Created by DanShevlyuk on 27/01/15.
- */
 public class FPCell {
     private int value;
     private boolean isEmpty;
+
     private FPPuzzle puzzle;
 
     public FPCell(int value, FPPuzzle puzzle) {
-        //TODO: инициализировать поля и все такое
+        this.value = value;
+        this.puzzle = puzzle;
+        isEmpty = value == -1;
     }
 
-    //TODO: геттер и сеттер для value и для isEmpty
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public boolean isEmpty() {
+        return isEmpty;
+    }
+
+    public void setEmpty(boolean isEmpty) {
+        this.isEmpty = isEmpty;
+    }
 }
