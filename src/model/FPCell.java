@@ -6,7 +6,7 @@ public class FPCell {
 
     public FPCell(int value) {
         this.value = value;
-        isEmpty = value == -1;
+        isEmpty = (value == -1);
     }
 
     public int getValue() {

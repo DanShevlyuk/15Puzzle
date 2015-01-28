@@ -7,15 +7,13 @@ public class FPPuzzle implements Iterable<FPCell> {
     private List<FPCell> cells;
 
     private int emptyCellIndex;
-    private final int w = 4;
-    private final int h = 4;
-    private final int size = w * h;
+    private final int width = 4;
+    private final int height = 4;
+    private final int puzzleSize = width * height;
 
     private static final Random RANDOM = new Random();
 
     public FPPuzzle() {
-        //TODO: init cells randomly
-        //TODO: init emptyCellIndex
         cells = new ArrayList<FPCell>();
 
         Set<Integer> usedNumbers = new HashSet<Integer>();
@@ -37,8 +35,6 @@ public class FPPuzzle implements Iterable<FPCell> {
         cells.set(0, cell);
     }
 
-    //TODO: написать геттер и сеттер (нужен ли он?) для emptyCellIndex
-
     /*
      *  Вызывается после того, как FPPuzzlePanel обработал нажатие
      *  мышкой по клетке и определил её индекс.
@@ -47,7 +43,6 @@ public class FPPuzzle implements Iterable<FPCell> {
      *
      * return true, когда все ок и false, когда передивнуть не удалось
      */
-    //TODO: имплементировать moveMePlease
     public boolean moveMePlease(int index) {
         //проверить можно ли двигать
         // подвинуть, если можно и вернуть true
@@ -72,10 +67,10 @@ public class FPPuzzle implements Iterable<FPCell> {
     }
 
     private int moveTo(int i) {
-        if ((i % w != 0) && cells.get(i - 1).isEmpty()) {
+        if ((i % width != 0) && cells.get(i - 1).isEmpty()) {
             return i - 1;
         }
-        else if (((i + 1) % w != 0) && cells.get(i + 1).isEmpty()) {
+        else if (((i + 1) % width != 0) && cells.get(i + 1).isEmpty()) {
             return i + 1;
         }
         else if (i + 4 < cells.size() && cells.get(i + 4).isEmpty()) {
@@ -90,7 +85,7 @@ public class FPPuzzle implements Iterable<FPCell> {
     }
 
     public int getSize() {
-        return size;
+        return puzzleSize;
     }
 
     public FPCell get (int index) {
