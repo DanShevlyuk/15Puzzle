@@ -11,11 +11,11 @@ import static org.junit.Assert.assertEquals;
 
 public class FPPuzzleTest {
 
-    private FPPuzzle puzzle;
+    private FPPuzzle puzzle = new FPPuzzle();
 
     @Before
     public void setUp() throws Exception {
-        puzzle = new FPPuzzle();
+        //puzzle = new FPPuzzle();
     }
 
     @After
@@ -24,14 +24,6 @@ public class FPPuzzleTest {
     }
 
     @Test
-    public void testMoveMePlease() throws Exception {
-        int emptyIndex = puzzle.getEmptyCellIndex();
-        System.out.println("Empty element index: " + emptyIndex);
-        boolean moved = puzzle.moveMePlease(emptyIndex + 1);
-        assertEquals(true, moved);
-    }
-
-    @Test(timeout = 100)
     public void testCreating() {
         Set<Integer> set = new HashSet<>();
         int emptyIndex = -1;
@@ -48,6 +40,7 @@ public class FPPuzzleTest {
 
         assertEquals(puzzle.getSize(), set.size());
         assertEquals(emptyIndex, puzzle.getEmptyCellIndex());
+        System.out.println("\n" + puzzle.getEmptyCellIndex());
         assertEquals(emptyCount, 1);
     }
 }
