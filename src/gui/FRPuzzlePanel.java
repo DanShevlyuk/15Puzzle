@@ -53,7 +53,7 @@ public class FRPuzzlePanel extends JPanel {
 
     public void makeViewsReactAtClicks(){
         for (int i = 0; i < cellViews.length; i++) {
-            addMouseListener(cellViews[i]);
+            //addMouseListener(cellViews[i]);
         }
     }
 
