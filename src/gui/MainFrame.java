@@ -177,19 +177,15 @@ public class MainFrame extends JFrame  {
         contentPanel.add(puzzlePanel);
         puzzlePanel.initComponents();
         contentPanel.addComponentListener(puzzlePanel);
-
         puzzlePanel.setParent(this);
-        //hideButton = new JButton("Switch to full-size puzzle");
-        //toolPanel.add(hideButton);
 
-       // toolPanel.setPreferredSize(new Dimension(hideButton.getWidth(), newGameButton.getHeight()));
         if (stuffOn) {
             stuff.setEnabled(false);
         }
 
         add(contentPanel);
     }
-    
+
     public void setCountLabel(String text) {
         this.stepsCounter.setText(text);
     }
