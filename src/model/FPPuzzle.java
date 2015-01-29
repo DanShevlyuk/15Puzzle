@@ -44,8 +44,9 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
             emptyCellIndex = RANDOM.nextInt(puzzleSize);
             swap(emptyCellIndex, 0);
             complete = testComplete();
+            solvability();
         }
-        while (complete || !checkSolvability());
+        while (complete);
     }
 
     /*
@@ -77,18 +78,30 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
         cells.set(pos2, cell1);
     }
 
-    private boolean checkSolvability() {
+    private void solvability() {
         int chaosCount = 0;
+        int emptyindex = -1;
         for (int i = 0; i < puzzleSize - 1; i++) {
             FPCell cell = cells.get(i);
+            if (cell.isEmpty()) {
+                emptyindex = cell.getPosition();
+                continue;
+            }
             for (int j = i + 1; j < puzzleSize; j++) {
-                if (cell.compareTo(cells.get(j)) > 0) {
+                if (!cells.get(j).isEmpty() && cell.compareTo(cells.get(j)) > 0) {
                     chaosCount++;
                 }
             }
         }
 
-        return chaosCount % 2 == 0;
+        if (chaosCount % 2 == 0) {
+            if (emptyindex > 2) {
+                swap(emptyindex - 1, emptyindex - 2);
+            }
+            else {
+                swap(emptyindex + 1, emptyindex + 2);
+            }
+        }
     }
 
     public int getEmptyCellIndex() {
