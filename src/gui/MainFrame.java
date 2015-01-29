@@ -1,6 +1,9 @@
 package gui;
 
+import sun.font.Font2D;
+
 import javax.swing.*;
+import javax.swing.text.AttributeSet;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -9,10 +12,10 @@ import java.awt.event.*;
  *
  */
 public class MainFrame extends JFrame  {
-    private JPanel contentPanel;
-    private FRPuzzlePanel puzzlePanel;
+    protected JPanel contentPanel;
+    protected FRPuzzlePanel puzzlePanel;
     private AwesomeButton newGameButton;
-    private JPanel toolPanel;
+    protected JPanel toolPanel;
     private JMenuBar menuBar;
     private JMenu menu;
     private JMenuItem newGame;
@@ -21,7 +24,10 @@ public class MainFrame extends JFrame  {
     private JMenuItem stuff;
     private JFileChooser fileChooser;
     private JButton hideButton;
+    private JLabel countLabel;
+
     private boolean stuffOn = true;
+
 
     public MainFrame() {
         setTitle("SWING, I HATE YOU");
@@ -100,6 +106,7 @@ public class MainFrame extends JFrame  {
     }
 
 
+
     private void buildPuzzlePanel(){
         puzzlePanel = new FRPuzzlePanel();
         contentPanel.addComponentListener(puzzlePanel);
@@ -113,7 +120,10 @@ public class MainFrame extends JFrame  {
         contentPanel = new JPanel(new GridLayout(1, 2));
 
         newGameButton = new AwesomeButton("New Game Bro");
-        toolPanel = new JPanel(new FlowLayout());
+        toolPanel = new JPanel(new GridLayout(1, 1));
+
+
+
 
         fileChooser = new JFileChooser();
         menuBar = new JMenuBar();
@@ -132,8 +142,16 @@ public class MainFrame extends JFrame  {
         this.setJMenuBar(menuBar);
 
         toolPanel.setPreferredSize(new Dimension(100, 100));
-        toolPanel.add(newGameButton);
+        //toolPanel.add(newGameButton);
         toolPanel.setVisible(true);
+
+
+        JLabel lab = new JLabel("SEX");
+
+        lab.setFont(new Font("Arial", Font.PLAIN, 72));
+        lab.setHorizontalAlignment(SwingConstants.CENTER);
+        toolPanel.add(lab);
+
 
         puzzlePanel = new FRPuzzlePanel();
         contentPanel.add(toolPanel);
@@ -143,8 +161,11 @@ public class MainFrame extends JFrame  {
 
         puzzlePanel.setParent(this);
         hideButton = new JButton("Switch to full-size puzzle");
-        toolPanel.add(hideButton);
+        //toolPanel.add(hideButton);
 
+
+        toolPanel.setPreferredSize(new Dimension(hideButton.getWidth(),
+                newGameButton.getHeight()));
         if (stuffOn) {
             stuff.setEnabled(false);
         }
