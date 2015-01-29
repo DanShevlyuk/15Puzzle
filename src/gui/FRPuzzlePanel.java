@@ -18,7 +18,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
 
     private JFrame parent;
 
-    boolean youWon = false;
+    private boolean youWon = false;
     public void setParent(JFrame fr){
         parent = fr;
     }
