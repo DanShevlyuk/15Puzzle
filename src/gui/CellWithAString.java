@@ -30,6 +30,7 @@ public class CellWithAString extends FPCellView {
         g2.setColor(Color.GREEN);
         g2.fill(rect);
         g2.setColor(Color.black);
+        g2.setFont(new Font("Arial", Font.BOLD, 15));
         g2.drawString(symbol, componentWidth/2, componentHeight/2);
     }
 }
