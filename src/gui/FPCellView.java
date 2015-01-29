@@ -19,7 +19,6 @@ public class FPCellView extends JComponent implements ComponentListener {
         model = cell;
     }
 
-
     /**
      * Вызывать только после add
      */
@@ -50,8 +49,7 @@ public class FPCellView extends JComponent implements ComponentListener {
     }
 
     @Override
-    public void paintComponent(Graphics g){
-
+    public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
         g2.draw(new Rectangle2D.Double(1, 1, componentWidth - 2, componentHeight - 2));
         int value = model.getValue();
@@ -60,7 +58,6 @@ public class FPCellView extends JComponent implements ComponentListener {
             g2.setColor(Color.DARK_GRAY);
             g2.fill(rect);
         } else {
-
             if (model.getPosition() == (model.getValue()) - 1){
                 Rectangle2D.Double rect = new Rectangle2D.Double(1, 1, componentWidth-2, componentHeight-2);
                 g2.setColor(Color.GREEN);
@@ -70,8 +67,6 @@ public class FPCellView extends JComponent implements ComponentListener {
             String str = Integer.toString(value);
             g2.drawString(str, componentWidth/2, componentHeight/2);
         }
-
-
     }
 
     @Override
@@ -80,24 +75,11 @@ public class FPCellView extends JComponent implements ComponentListener {
     }
 
     @Override
-    public void componentMoved(ComponentEvent e) {
-
-    }
+    public void componentMoved(ComponentEvent e) {}
 
     @Override
-    public void componentShown(ComponentEvent e) {
-
-    }
+    public void componentShown(ComponentEvent e) {}
 
     @Override
-    public void componentHidden(ComponentEvent e) {
-
-    }
-
-
-
-
-
-
-
+    public void componentHidden(ComponentEvent e) {}
 }
