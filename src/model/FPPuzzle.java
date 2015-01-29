@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.*;
 
 public class FPPuzzle implements Iterable<FPCell>, Serializable {
-
     protected List<FPCell> cells;
 
     private int emptyCellIndex;
@@ -29,10 +28,6 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
 
             int i = 1;
             while (i < puzzleSize) {
-                //пазл будет решаться, если сначала заполнить массив числами,
-                //а потом менять их местами. При это нужно смотреть, чтобы
-                //колличество перестановок было четно. Если будет нечетное,
-                //то пазл неразрешим.
                 int next = RANDOM.nextInt(puzzleSize - 1) + 1;
 
                 if (usedNumbers.add(next)) {
@@ -45,8 +40,7 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
             emptyCellIndex = RANDOM.nextInt(puzzleSize);
             swap(emptyCellIndex, 0);
             complete = testComplete();
-            solvability();
-        } while (complete);
+        } while (complete && !canSolve());
     }
 
     /*
@@ -79,30 +73,22 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
         cells.set(pos2, cell1);
     }
 
-    private void solvability() {
+    private boolean canSolve() {
         int chaosCount = 0;
-        int emptyIndex = -1;
         for (int i = 0; i < puzzleSize - 1; i++) {
             FPCell cell = cells.get(i);
-            if (cell.isEmpty()) {
-                emptyIndex = cell.getPosition();
+            if (i == emptyCellIndex) {
                 continue;
             }
+
             for (int j = i + 1; j < puzzleSize; j++) {
-                if (!cells.get(j).isEmpty() && cell.compareTo(cells.get(j)) > 0) {
+                if (j != emptyCellIndex && cell.compareTo(cells.get(j)) > 0) {
                     chaosCount++;
                 }
             }
         }
 
-        if (chaosCount % 2 != 0) {
-            if (emptyIndex > 2) {
-                swap(emptyIndex - 1, emptyIndex - 2);
-            }
-            else {
-                swap(emptyIndex + 1, emptyIndex + 2);
-            }
-        }
+        return chaosCount % 2 == 0;
     }
 
     public int getEmptyCellIndex() {
