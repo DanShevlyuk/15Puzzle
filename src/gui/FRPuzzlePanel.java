@@ -5,17 +5,14 @@ import model.FPPuzzle;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
  * Игровое поле с клетками
  */
-public class FRPuzzlePanel extends JPanel implements MouseListener {
+public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentListener {
     private FPPuzzle puzzle;
     private FPCellView cellViews[];
 
@@ -30,7 +27,6 @@ public class FRPuzzlePanel extends JPanel implements MouseListener {
 
     public FRPuzzlePanel() {
         setLayout(layout);
-        initComponents();
     }
 
 
@@ -45,12 +41,13 @@ public class FRPuzzlePanel extends JPanel implements MouseListener {
         repaint();
         validate();
         updateUI();
+
     }
 
     @Override
     public Dimension getPreferredSize(){
         return new Dimension((int)(4 * cellViews[0].getPreferredSize().getWidth()),
-                (int)(4 * cellViews[0].getPreferredSize().getHeight()));
+                (int)(4 * cellViews[0].getPreferredSize().getHeight()) + 2);
     }
 
     public void initComponents() {
@@ -63,6 +60,9 @@ public class FRPuzzlePanel extends JPanel implements MouseListener {
             add(cellViews[i]);
         }
         panelListenToCells();
+        repaint();
+        validate();
+        updateUI();
     }
 
     public FPPuzzle getPuzzle() {
@@ -113,16 +113,38 @@ public class FRPuzzlePanel extends JPanel implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        //
+        //Shutter
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        //
+        //Shutter
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        //
+        //Shutte
+    }
+
+    @Override
+    public void componentResized(ComponentEvent e) {
+        JPanel source = (JPanel)e.getComponent();
+        setSize(new Dimension(source.getWidth(), source.getHeight() ));
+
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent e) {
+        //Затычка
+    }
+
+    @Override
+    public void componentShown(ComponentEvent e) {
+        //Затычка
+    }
+
+    @Override
+    public void componentHidden(ComponentEvent e) {
+        //Затычка
     }
 }

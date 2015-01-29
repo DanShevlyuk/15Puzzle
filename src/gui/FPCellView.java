@@ -27,7 +27,7 @@ public class FPCellView extends JComponent implements ComponentListener {
         FRPuzzlePanel parent =  (FRPuzzlePanel)getParent();
         if (parent != null) {
             componentWidth = parent.getWidth() / (int)Math.sqrt(parent.getPuzzle().getSize());
-            componentHeight = parent.getHeight() / (int)Math.sqrt(parent.getPuzzle().getSize());
+            componentHeight = parent.getHeight() / (int)Math.sqrt(parent.getPuzzle().getSize()) ;
         }
     }
 
@@ -53,10 +53,10 @@ public class FPCellView extends JComponent implements ComponentListener {
     public void paintComponent(Graphics g){
 
         Graphics2D g2 = (Graphics2D)g;
-        g2.draw(new Rectangle2D.Double(0, 0, componentWidth , componentHeight ));
+        g2.draw(new Rectangle2D.Double(1, 1, componentWidth - 2, componentHeight - 2));
         int value = model.getValue();
         if (value == -1) {
-            Rectangle2D.Double rect = new Rectangle2D.Double(0, 0, componentWidth , componentHeight );
+            Rectangle2D.Double rect = new Rectangle2D.Double(0, 0, componentWidth, componentHeight );
             g2.setColor(Color.DARK_GRAY);
             g2.fill(rect);
         } else {
