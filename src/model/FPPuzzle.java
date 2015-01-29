@@ -17,14 +17,14 @@ public class FPPuzzle implements Iterable<FPCell> {
         cells = new ArrayList<>();
 
         Set<Integer> usedNumbers = new HashSet<>();
-        cells.add(new FPCell(-1));
+        cells.add(new FPCell(-1, cells.size()));
 
         int i = 1;
         while (i < 16) {
             int next = RANDOM.nextInt(15) + 1;
 
             if (usedNumbers.add(next)) {
-                cells.add(new FPCell(next));
+                cells.add(new FPCell(next, cells.size()));
                 i++;
             }
         }
