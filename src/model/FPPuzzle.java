@@ -7,14 +7,21 @@ public class FPPuzzle implements Iterable<FPCell> {
     private List<FPCell> cells;
 
     private int emptyCellIndex;
-    private final int width = 4;
-    private final int height = 4;
-    private final int puzzleSize = width * height;
+    private final int width;
+    private final int height;
+    private final int puzzleSize;
     private boolean complete = false;
 
     private static final Random RANDOM = new Random();
 
+
     public FPPuzzle() {
+        this(16);
+    }
+
+    public FPPuzzle(int size) {
+        width = height = (int)Math.sqrt(size);
+        puzzleSize = size;
         do {
             cells = new ArrayList<>();
             Set<Integer> usedNumbers = new HashSet<>();
@@ -22,8 +29,6 @@ public class FPPuzzle implements Iterable<FPCell> {
 
             int i = 1;
             while (i < puzzleSize) {
-
-                //TODO: изменить метод с учетом разрешимости задачи
                 //пазл будет решаться, если сначала заполнить массив числами,
                 //а потом менять их местами. При это нужно смотреть, чтобы
                 //колличество перестановок было четно. Если будет нечетное,
@@ -82,7 +87,7 @@ public class FPPuzzle implements Iterable<FPCell> {
                 }
             }
         }
-        
+
         return chaosCount % 2 == 0;
     }
 
