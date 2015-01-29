@@ -94,7 +94,7 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
             }
         }
 
-        if (chaosCount % 2 == 0) {
+        if (chaosCount % 2 != 0) {
             if (emptyindex > 2) {
                 swap(emptyindex - 1, emptyindex - 2);
             }
