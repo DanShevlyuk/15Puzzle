@@ -1,8 +1,5 @@
 package model;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
 public class FPCell  {
     private int value;
     private boolean isEmpty;
@@ -28,6 +25,10 @@ public class FPCell  {
 
     public int getPosition() {
         return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     public void setEmpty(boolean isEmpty) {

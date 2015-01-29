@@ -17,22 +17,20 @@ public class FPPuzzle implements Iterable<FPCell> {
         cells = new ArrayList<>();
 
         Set<Integer> usedNumbers = new HashSet<>();
-        cells.add(new FPCell(-1, cells.size()));
+        cells.add(new FPCell(-1, 0));
 
         int i = 1;
-        while (i < 16) {
-            int next = RANDOM.nextInt(15) + 1;
+        while (i < puzzleSize) {
+            int next = RANDOM.nextInt(puzzleSize - 1) + 1;
 
             if (usedNumbers.add(next)) {
-                cells.add(new FPCell(next, cells.size()));
+                cells.add(new FPCell(next, i));
                 i++;
             }
         }
 
-        emptyCellIndex = RANDOM.nextInt(16);
-        FPCell cell = cells.get(emptyCellIndex);
-        cells.set(emptyCellIndex, cells.get(0));
-        cells.set(0, cell);
+        emptyCellIndex = RANDOM.nextInt(puzzleSize);
+        swap(emptyCellIndex, 0);
     }
 
     /*
@@ -49,9 +47,7 @@ public class FPPuzzle implements Iterable<FPCell> {
 
         int moveto = moveTo(index);
         if (moveto != -1) {
-            FPCell cell = cells.get(index);
-            cells.set(index, cells.get(moveto));
-            cells.set(moveto, cell);
+            swap(index, moveto);
             return true;
         }
 
@@ -60,6 +56,16 @@ public class FPPuzzle implements Iterable<FPCell> {
         // если нельзя, то false
         return false;
 
+    }
+
+    private void swap(int pos1, int pos2) {
+        FPCell cell1 = cells.get(pos1);
+        FPCell cell2 = cells.get(pos2);
+        int cell1pos = cell1.getPosition();
+        cell1.setPosition(cell2.getPosition());
+        cell2.setPosition(cell1pos);
+        cells.set(pos1, cell2);
+        cells.set(pos2, cell1);
     }
 
     public int getEmptyCellIndex() {
@@ -73,11 +79,11 @@ public class FPPuzzle implements Iterable<FPCell> {
         else if (((i + 1) % width != 0) && cells.get(i + 1).isEmpty()) {
             return i + 1;
         }
-        else if (i + 4 < cells.size() && cells.get(i + 4).isEmpty()) {
-            return i + 4;
+        else if (i + width < cells.size() && cells.get(i + width).isEmpty()) {
+            return i + width;
         }
-        else if (i - 4 > 0 && cells.get(i - 4).isEmpty()) {
-            return i - 4;
+        else if (i - width > 0 && cells.get(i - width).isEmpty()) {
+            return i - width;
         }
         else {
             return - 1;

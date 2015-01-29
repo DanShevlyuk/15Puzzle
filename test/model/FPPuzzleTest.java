@@ -1,6 +1,5 @@
 package model;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,16 +10,11 @@ import static org.junit.Assert.assertEquals;
 
 public class FPPuzzleTest {
 
-    private FPPuzzle puzzle = new FPPuzzle();
+    private FPPuzzle puzzle;
 
     @Before
     public void setUp() throws Exception {
-        //puzzle = new FPPuzzle();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-
+        puzzle = new FPPuzzle();
     }
 
     @Test
