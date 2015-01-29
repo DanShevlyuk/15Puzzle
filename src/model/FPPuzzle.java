@@ -10,27 +10,31 @@ public class FPPuzzle implements Iterable<FPCell> {
     private final int width = 4;
     private final int height = 4;
     private final int puzzleSize = width * height;
+    private boolean complete = false;
 
     private static final Random RANDOM = new Random();
 
     public FPPuzzle() {
-        cells = new ArrayList<>();
+        do {
+            cells = new ArrayList<>();
+            Set<Integer> usedNumbers = new HashSet<>();
+            cells.add(new FPCell(-1, 0));
 
-        Set<Integer> usedNumbers = new HashSet<>();
-        cells.add(new FPCell(-1, 0));
+            int i = 1;
+            while (i < puzzleSize) {
+                int next = RANDOM.nextInt(puzzleSize - 1) + 1;
 
-        int i = 1;
-        while (i < puzzleSize) {
-            int next = RANDOM.nextInt(puzzleSize - 1) + 1;
-
-            if (usedNumbers.add(next)) {
-                cells.add(new FPCell(next, i));
-                i++;
+                if (usedNumbers.add(next)) {
+                    cells.add(new FPCell(next, i));
+                    i++;
+                }
             }
-        }
 
-        emptyCellIndex = RANDOM.nextInt(puzzleSize);
-        swap(emptyCellIndex, 0);
+            emptyCellIndex = RANDOM.nextInt(puzzleSize);
+            swap(emptyCellIndex, 0);
+            complete = testComplete();
+        }
+        while (complete);
     }
 
     /*
@@ -48,6 +52,7 @@ public class FPPuzzle implements Iterable<FPCell> {
         int moveto = moveTo(index);
         if (moveto != -1) {
             swap(index, moveto);
+            complete = testComplete();
             return true;
         }
 
@@ -94,6 +99,15 @@ public class FPPuzzle implements Iterable<FPCell> {
         return puzzleSize;
     }
 
+    private boolean testComplete() {
+        for (FPCell cell : this) {
+            if (cell.getValue() != -1 && cell.getPosition() != cell.getValue()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public FPCell get (int index) {
         return cells.get(index);
     }
@@ -101,5 +115,9 @@ public class FPPuzzle implements Iterable<FPCell> {
     @Override
     public Iterator<FPCell> iterator() {
         return cells.iterator();
+    }
+
+    public boolean isComplete() {
+        return complete;
     }
 }
