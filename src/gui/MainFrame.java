@@ -26,7 +26,7 @@ public class MainFrame extends JFrame  {
     private JMenuItem openGame;
     private JMenuItem stuff;
     private JFileChooser fileChooser;
-    private JButton hideButton;
+    private JMenuItem hideButton;
     private JLabel countLabel;
 
     private boolean stuffOn = true;
@@ -95,11 +95,14 @@ public class MainFrame extends JFrame  {
         hideButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                contentPanel.remove(toolPanel);
-                contentPanel.repaint();
-                contentPanel.updateUI();
-                stuffOn = false;
-                stuff.setEnabled(true);
+                if (stuffOn) {
+                    contentPanel.remove(toolPanel);
+                    contentPanel.repaint();
+                    contentPanel.updateUI();
+                    stuffOn = false;
+                    stuff.setEnabled(true);
+                    hideButton.setEnabled(false);
+                }
             }
         });
 
@@ -114,6 +117,7 @@ public class MainFrame extends JFrame  {
                     contentPanel.updateUI();
                     stuffOn = true;
                     stuff.setEnabled(false);
+                    hideButton.setEnabled(true);
                 }
             }
         });
@@ -146,8 +150,6 @@ public class MainFrame extends JFrame  {
         toolPanel = new JPanel(new GridLayout(1, 1));
 
 
-
-
         fileChooser = new JFileChooser();
         menuBar = new JMenuBar();
         menu = new JMenu("Menu");
@@ -155,12 +157,16 @@ public class MainFrame extends JFrame  {
         saveGame = new JMenuItem("Save");
         openGame = new JMenuItem("Open");
         stuff = new JMenuItem("Return stuff");
-        menu.add(stuff);
+        hideButton = new JMenuItem("Hide stuff");
+
         menu.add(newGame);
         menu.addSeparator();
         menu.add(openGame);
-        menu.addSeparator();
         menu.add(saveGame);
+        menu.addSeparator();
+        menu.add(stuff);
+        menu.add(hideButton);
+
         menuBar.add(menu);
         this.setJMenuBar(menuBar);
 
@@ -188,7 +194,7 @@ public class MainFrame extends JFrame  {
         contentPanel.addComponentListener(puzzlePanel);
 
         puzzlePanel.setParent(this);
-        hideButton = new JButton("Switch to full-size puzzle");
+        //hideButton = new JButton("Switch to full-size puzzle");
         //toolPanel.add(hideButton);
 
 
