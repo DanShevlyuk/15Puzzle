@@ -40,6 +40,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener {
         sortCellsByPosition();
         for (int i = 0; i < cellViews.length; i++) {
             add(cellViews[i]);
+            cellViews[i].countTheSize();
         }
         repaint();
         validate();
