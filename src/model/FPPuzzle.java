@@ -22,6 +22,12 @@ public class FPPuzzle implements Iterable<FPCell> {
 
             int i = 1;
             while (i < puzzleSize) {
+
+                //TODO: изменить метод с учетом разрешимости задачи
+                //пазл будет решаться, если сначала заполнить массив числами,
+                //а потом менять их местами. При это нужно смотреть, чтобы
+                //колличество перестановок было четно. Если будет нечетное,
+                //то пазл неразрешим.
                 int next = RANDOM.nextInt(puzzleSize - 1) + 1;
 
                 if (usedNumbers.add(next)) {
@@ -46,9 +52,6 @@ public class FPPuzzle implements Iterable<FPCell> {
      * return true, когда все ок и false, когда передивнуть не удалось
      */
     public boolean moveMePlease(int index) {
-        //проверить можно ли двигать
-        // подвинуть, если можно и вернуть true
-
         int whereToMove = moveTo(index);
         if (whereToMove != -1) {
             swap(index, whereToMove);
@@ -74,6 +77,7 @@ public class FPPuzzle implements Iterable<FPCell> {
     }
 
     private int moveTo(int i) {
+        //TODO: Если пустышка в левом верхнем углу, то проблемы с нижним элементом
         if ((i % width != 0) && cells.get(i - 1).isEmpty()) {
             return i - 1;
         }
