@@ -44,16 +44,6 @@ public class MainFrame extends JFrame  {
         });
         pack();
 
-        newGame.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                contentPanel.removeAll();
-                contentPanel.add(toolPanel);
-                buildPuzzlePanel();
-                contentPanel.repaint();
-            }
-        });
-
         saveGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -67,16 +57,16 @@ public class MainFrame extends JFrame  {
 
             }
         });
-
     }
+
 
     private void buildPuzzlePanel(){
         puzzlePanel = new FRPuzzlePanel();
         contentPanel.addComponentListener(puzzlePanel);
         puzzlePanel.setParent(this);
         contentPanel.add(puzzlePanel);
-
         puzzlePanel.initComponents();
+        puzzlePanel.makeCellViewsResizable();
     }
 
     private void initComponents() {
@@ -109,11 +99,8 @@ public class MainFrame extends JFrame  {
         puzzlePanel.initComponents();
         contentPanel.addComponentListener(puzzlePanel);
 
-
-
-
-
         puzzlePanel.setParent(this);
+
 
 
 

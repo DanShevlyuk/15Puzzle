@@ -63,6 +63,9 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
         repaint();
         validate();
         updateUI();
+        for (FPCellView cell : cellViews) {
+            cell.updateTheView();
+        }
     }
 
     public FPPuzzle getPuzzle() {
@@ -130,6 +133,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
     public void componentResized(ComponentEvent e) {
         JPanel source = (JPanel)e.getComponent();
         setSize(new Dimension(source.getWidth(), source.getHeight() ));
+        repaint();
 
     }
 
