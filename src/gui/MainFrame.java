@@ -4,12 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * Main Frame for 15 Puzzle
  *
  */
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame  {
     private FRPuzzlePanel puzzlePanel;
 
     public MainFrame() {
@@ -17,11 +19,13 @@ public class MainFrame extends JFrame {
         initComponents();
         Toolkit tk;
         tk = Toolkit.getDefaultToolkit();
+
         Dimension screen = tk.getScreenSize();
         setLocation((int) screen.getWidth() / 4, (int) screen.getHeight() / 4);
         pack();
         setVisible(true);
         puzzlePanel.makeCellViewsResizable();
+        Component glassPane = getGlassPane();
 
     }
 
@@ -41,19 +45,12 @@ public class MainFrame extends JFrame {
         repaint();
     }
 
-    private void jPanelPuzzleMouseClicked(java.awt.event.MouseEvent evt) {
-        System.out.println("sexyAreYou?");
-        if (evt.getClickCount() == 0) {
-            return;
-        }
-        puzzlePanel.cellClicked(evt);
-
-        updateFrame();
-    }
+    // removed extramethod
 
     public static void main(String[] args) {
         new MainFrame();
 
     }
+
 
 }

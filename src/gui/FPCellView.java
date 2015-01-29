@@ -19,6 +19,7 @@ public class FPCellView extends JComponent implements ComponentListener {
         model = cell;
     }
 
+
     /**
      * Вызывать только после add
      */
@@ -33,6 +34,14 @@ public class FPCellView extends JComponent implements ComponentListener {
     public void updateTheView() {
         countTheSize();
         repaint();
+    }
+
+    public int getModelValue() {
+        return model.getValue();
+    }
+
+    public int getModelPosition() {
+        return model.getPosition();
     }
 
     @Override
@@ -70,7 +79,6 @@ public class FPCellView extends JComponent implements ComponentListener {
     }
 
 
-    // Some empty shits in the bottom
 
 
 
