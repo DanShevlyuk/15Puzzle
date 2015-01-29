@@ -13,11 +13,12 @@ import java.awt.event.MouseListener;
  * Игровое поле с клетками
  */
 public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentListener {
-    private FPPuzzle puzzle;
-    private FPCellView cellViews[];
+    protected FPPuzzle puzzle;
+    protected FPCellView cellViews[];
 
     private JFrame parent;
 
+    boolean youWon = false;
     public void setParent(JFrame fr){
         parent = fr;
     }
@@ -119,8 +120,34 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
         int moveMe = cellClicked.getModelPosition();
         if (puzzle.moveMePlease(moveMe)){
             fillPaneSortedByPosition();
+            if (puzzle.isComplete()){
+                fillWithCongratulations();
+            }
         }
         repaint();
+    }
+
+
+    public void fillWithCongratulations() {
+
+        String str = "CONGRATULATIONS!";
+
+        removeAll();
+
+        for (int i = 0; i < 16; i ++) {
+            String letter = Character.toString(str.charAt(i));
+            cellViews[i] = new CellWithAString(letter);
+            add(cellViews[i]);
+            cellViews[i].countTheSize();
+        }
+        makeCellViewsResizable();
+        repaint();
+        validate();
+        updateUI();
+        for (FPCellView cell : cellViews) {
+            cell.updateTheView();
+        }
+
     }
 
     @Override

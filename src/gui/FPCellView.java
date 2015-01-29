@@ -12,8 +12,8 @@ import java.awt.geom.Rectangle2D;
 
 public class FPCellView extends JComponent implements ComponentListener {
     FPCell model;
-    private int componentWidth = 50;
-    private int componentHeight = 50;
+    protected int componentWidth = 50;
+    protected int componentHeight = 50;
 
     public FPCellView(FPCell  cell) {
         model = cell;

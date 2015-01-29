@@ -1,5 +1,6 @@
 package model;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +18,20 @@ public class FPPuzzleTest {
         puzzle = new FPPuzzle();
     }
 
+    @After
+    public void tearDown() throws Exception {
+
+    }
+
     @Test
+    public void testMoveMePlease() throws Exception {
+        int emptyIndex = puzzle.getEmptyCellIndex();
+        System.out.println("Empty element index: " + emptyIndex);
+        boolean moved = puzzle.moveMePlease(emptyIndex + 1);
+        assertEquals(true, moved);
+    }
+
+    @Test(timeout = 100)
     public void testCreating() {
         Set<Integer> set = new HashSet<>();
         int emptyIndex = -1;
@@ -34,7 +48,6 @@ public class FPPuzzleTest {
 
         assertEquals(puzzle.getSize(), set.size());
         assertEquals(emptyIndex, puzzle.getEmptyCellIndex());
-        System.out.println("\n" + puzzle.getEmptyCellIndex());
         assertEquals(emptyCount, 1);
     }
 }

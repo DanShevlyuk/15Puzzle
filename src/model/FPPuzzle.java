@@ -5,7 +5,7 @@ import java.util.*;
 
 public class FPPuzzle implements Iterable<FPCell>, Serializable {
 
-    private List<FPCell> cells;
+    protected List<FPCell> cells;
 
     private int emptyCellIndex;
     private final int sizeofside;
