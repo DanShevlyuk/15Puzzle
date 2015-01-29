@@ -37,18 +37,16 @@ public class MainFrame extends JFrame  {
             }
         });
         pack();
-
-
-
     }
+
 
     private void buildPuzzlePanel(){
         puzzlePanel = new FRPuzzlePanel();
         contentPanel.addComponentListener(puzzlePanel);
         puzzlePanel.setParent(this);
         contentPanel.add(puzzlePanel);
-
         puzzlePanel.initComponents();
+        puzzlePanel.makeCellViewsResizable();
     }
 
     private void initComponents() {
@@ -66,11 +64,8 @@ public class MainFrame extends JFrame  {
         puzzlePanel.initComponents();
         contentPanel.addComponentListener(puzzlePanel);
 
-
-
-
-
         puzzlePanel.setParent(this);
+
 
 
 
