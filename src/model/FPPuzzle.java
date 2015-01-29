@@ -77,6 +77,7 @@ public class FPPuzzle implements Iterable<FPCell> {
     }
 
     private int moveTo(int i) {
+        //TODO: Если пустышка в левом верхнем углу, то проблемы с нижним элементом
         if ((i % width != 0) && cells.get(i - 1).isEmpty()) {
             return i - 1;
         }
