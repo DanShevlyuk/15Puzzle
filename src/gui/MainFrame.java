@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 /**
- * Main Frame for 15 Puzzle
+ * Main game window 
  *
  */
 public class MainFrame extends JFrame  {
@@ -27,7 +27,6 @@ public class MainFrame extends JFrame  {
     private JMenuItem stuff;
     private JFileChooser fileChooser;
     private JButton hideButton;
-    private JLabel countLabel;
 
     private boolean stuffOn = true;
     private Serializator ser;
@@ -119,12 +118,9 @@ public class MainFrame extends JFrame  {
         });
     }
 
-
-
     private void buildPuzzlePanel(){
         puzzlePanel = new FRPuzzlePanel();
         contentPanel.addComponentListener(puzzlePanel);
-        puzzlePanel.setParent(this);
         contentPanel.add(puzzlePanel);
         puzzlePanel.initComponents();
         puzzlePanel.makeCellViewsResizable();
@@ -133,7 +129,6 @@ public class MainFrame extends JFrame  {
     private void buildPuzzlePanel(FPPuzzle puzzle){
         puzzlePanel = new FRPuzzlePanel();
         contentPanel.addComponentListener(puzzlePanel);
-        puzzlePanel.setParent(this);
         contentPanel.add(puzzlePanel);
         puzzlePanel.initComponents(puzzle);
         puzzlePanel.makeCellViewsResizable();
@@ -141,12 +136,8 @@ public class MainFrame extends JFrame  {
 
     private void initComponents() {
         contentPanel = new JPanel(new GridLayout(1, 2));
-
         newGameButton = new AwesomeButton("New Game Bro");
         toolPanel = new JPanel(new GridLayout(1, 1));
-
-
-
 
         fileChooser = new JFileChooser();
         menuBar = new JMenuBar();
@@ -170,7 +161,6 @@ public class MainFrame extends JFrame  {
         fileChooser.setFileFilter(filter);
         fileChooser.setCurrentDirectory(new File(""));
         toolPanel.setPreferredSize(new Dimension(100, 100));
-        //toolPanel.add(newGameButton);
         toolPanel.setVisible(true);
 
 
@@ -186,11 +176,7 @@ public class MainFrame extends JFrame  {
         contentPanel.add(puzzlePanel);
         puzzlePanel.initComponents();
         contentPanel.addComponentListener(puzzlePanel);
-
-        puzzlePanel.setParent(this);
         hideButton = new JButton("Switch to full-size puzzle");
-        //toolPanel.add(hideButton);
-
 
         toolPanel.setPreferredSize(new Dimension(hideButton.getWidth(),
                 newGameButton.getHeight()));
@@ -200,9 +186,6 @@ public class MainFrame extends JFrame  {
 
         add(contentPanel);
     }
-
-
-
 
     // removed extramethod
 
