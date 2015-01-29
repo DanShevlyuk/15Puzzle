@@ -1,13 +1,13 @@
 package gui;
 
-import model.FPCell;
 import model.FPPuzzle;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * Игровое поле с клетками
@@ -52,6 +52,15 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
 
     public void initComponents() {
         puzzle = new FPPuzzle();
+        init();
+    }
+
+    public void initComponents(FPPuzzle puzzle) {
+        this.puzzle = puzzle;
+        init();
+    }
+
+    private void init() {
         cellViews = new FPCellView[puzzle.getSize()];
         for (int i = 0; i < cellViews.length; i++) {
             cellViews[i] = new FPCellView(puzzle.get(i));
@@ -108,7 +117,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
         System.out.println("Clicked " + cellClicked.getModelValue());
         System.out.println("Pos " + cellClicked.getModelPosition());
         int moveMe = cellClicked.getModelPosition();
-        if(puzzle.moveMePlease(moveMe)){
+        if (puzzle.moveMePlease(moveMe)){
             fillPaneSortedByPosition();
         }
         repaint();
