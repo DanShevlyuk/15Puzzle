@@ -40,7 +40,7 @@ public class FPPuzzle implements Iterable<FPCell> {
             swap(emptyCellIndex, 0);
             complete = testComplete();
         }
-        while (complete);
+        while (complete || !checkSolvability());
     }
 
     /*
@@ -72,12 +72,25 @@ public class FPPuzzle implements Iterable<FPCell> {
         cells.set(pos2, cell1);
     }
 
+    private boolean checkSolvability() {
+        int chaosCount = 0;
+        for (int i = 0; i < puzzleSize - 1; i++) {
+            FPCell cell = cells.get(i);
+            for (int j = i + 1; j < puzzleSize; j++) {
+                if (cell.compareTo(cells.get(j)) > 0) {
+                    chaosCount++;
+                }
+            }
+        }
+        
+        return chaosCount % 2 == 0;
+    }
+
     public int getEmptyCellIndex() {
         return emptyCellIndex;
     }
 
     private int moveTo(int i) {
-        //TODO: Если пустышка в левом верхнем углу, то проблемы с нижним элементом
         if ((i % width != 0) && cells.get(i - 1).isEmpty()) {
             return i - 1;
         }
@@ -87,7 +100,7 @@ public class FPPuzzle implements Iterable<FPCell> {
         else if (i + width < cells.size() && cells.get(i + width).isEmpty()) {
             return i + width;
         }
-        else if (i - width > 0 && cells.get(i - width).isEmpty()) {
+        else if (i - width >= 0 && cells.get(i - width).isEmpty()) {
             return i - width;
         }
         else {
