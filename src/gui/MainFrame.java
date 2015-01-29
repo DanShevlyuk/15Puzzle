@@ -21,6 +21,7 @@ public class MainFrame extends JFrame  {
     private JFileChooser fileChooser;
 
     public MainFrame() {
+        setTitle("SWING, I HATE YOU");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         initComponents();
         setContentPane(contentPanel);
@@ -42,6 +43,7 @@ public class MainFrame extends JFrame  {
                 contentPanel.repaint();
             }
         });
+        setPreferredSize(new Dimension(800, 500));
         pack();
 
         saveGame.addActionListener(new ActionListener() {
