@@ -41,6 +41,9 @@ public class FRPuzzlePanel extends JPanel implements MouseListener {
         for (int i = 0; i < cellViews.length; i++) {
             add(cellViews[i]);
         }
+        repaint();
+        validate();
+        updateUI();
     }
 
     @Override
@@ -55,7 +58,9 @@ public class FRPuzzlePanel extends JPanel implements MouseListener {
         for (int i = 0; i < cellViews.length; i++) {
             cellViews[i] = new FPCellView(puzzle.get(i));
         }
-        fillPaneSortedByPosition();
+        for (int i = 0; i < cellViews.length; i++) {
+            add(cellViews[i]);
+        }
         panelListenToCells();
     }
 
@@ -78,37 +83,31 @@ public class FRPuzzlePanel extends JPanel implements MouseListener {
 
 
     public void sortCellsByPosition() {
-        FPCellView cellArray[] = new FPCellView[cellViews.length];
-
-        System.arraycopy(cellViews, 0, cellArray, 0, cellViews.length);
-
-        boolean sortedOk = true;
-
-        for (int i = 0; i < cellArray.length; i++) {
-            if (cellArray[i].getModelPosition() != i) {
-                sortedOk = false;
-                break;
-            }
+        cellViews = new FPCellView[puzzle.getSize()];
+        for (int i = 0; i < cellViews.length; i++) {
+            cellViews[i] = new FPCellView(puzzle.get(i));
         }
-        System.arraycopy(cellArray, 0, cellViews, 0, cellArray.length);
+        panelListenToCells();
+        makeCellViewsResizable();
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        //затычка
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
 
         FPCellView cellClicked = (FPCellView)e.getComponent();
         System.out.println("Clicked " + cellClicked.getModelValue());
         System.out.println("Pos " + cellClicked.getModelPosition());
         int moveMe = cellClicked.getModelPosition();
         if(puzzle.moveMePlease(moveMe)){
-           fillPaneSortedByPosition();
+            fillPaneSortedByPosition();
         }
         repaint();
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        //
     }
 
     @Override
