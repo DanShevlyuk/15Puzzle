@@ -51,27 +51,12 @@ public class FRPuzzlePanel extends JPanel {
         }
     }
 
-    public void makeViewsReactAtClicks(){
-        for (int i = 0; i < cellViews.length; i++) {
-            //addMouseListener(cellViews[i]);
-        }
+
+    public void puzzleListenToCells() {
+
     }
 
-    public void cellClicked(java.awt.event.MouseEvent evt) {
-        int row = 0;
-        int column = 0;
-        //TODO: добыть кликнутую строку и столбец из фрейма используя размеры
-        //
-        // evt.getX() evt.getY()
-        //
 
-        //TODO: преобразовать две координаты в индекс используя размеры поля из puzzle
-        // чтобы не хардкодить и можно было бы
-        // потом сделеать поле не 16 клеток, а больше
-
-        int index = 0;
-        puzzle.moveMePlease(index);
-    }
 
 
 }
