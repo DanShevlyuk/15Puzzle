@@ -26,7 +26,7 @@ public class MainFrame extends JFrame  {
     private JMenuItem openGame;
     private JMenuItem stuff;
     private JFileChooser fileChooser;
-    private JMenuItem hideButton;
+    private JButton hideButton;
     private JLabel countLabel;
 
     private boolean stuffOn = true;
@@ -95,14 +95,11 @@ public class MainFrame extends JFrame  {
         hideButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (stuffOn) {
-                    contentPanel.remove(toolPanel);
-                    contentPanel.repaint();
-                    contentPanel.updateUI();
-                    stuffOn = false;
-                    stuff.setEnabled(true);
-                    hideButton.setEnabled(false);
-                }
+                contentPanel.remove(toolPanel);
+                contentPanel.repaint();
+                contentPanel.updateUI();
+                stuffOn = false;
+                stuff.setEnabled(true);
             }
         });
 
@@ -117,7 +114,6 @@ public class MainFrame extends JFrame  {
                     contentPanel.updateUI();
                     stuffOn = true;
                     stuff.setEnabled(false);
-                    hideButton.setEnabled(true);
                 }
             }
         });
@@ -159,15 +155,12 @@ public class MainFrame extends JFrame  {
         saveGame = new JMenuItem("Save");
         openGame = new JMenuItem("Open");
         stuff = new JMenuItem("Return stuff");
-        hideButton = new JMenuItem("Full size puzzle");
-
+        menu.add(stuff);
         menu.add(newGame);
         menu.addSeparator();
         menu.add(openGame);
-        menu.add(saveGame);
         menu.addSeparator();
-        menu.add(stuff);
-        menu.add(hideButton);
+        menu.add(saveGame);
         menuBar.add(menu);
         this.setJMenuBar(menuBar);
 
@@ -175,7 +168,7 @@ public class MainFrame extends JFrame  {
         ser = new Serializator();
         fileChooser.removeChoosableFileFilter(fileChooser.getFileFilter());
         fileChooser.setFileFilter(filter);
-        fileChooser.setCurrentDirectory(new File("."));
+        fileChooser.setCurrentDirectory(new File(""));
         toolPanel.setPreferredSize(new Dimension(100, 100));
         //toolPanel.add(newGameButton);
         toolPanel.setVisible(true);
@@ -195,7 +188,7 @@ public class MainFrame extends JFrame  {
         contentPanel.addComponentListener(puzzlePanel);
 
         puzzlePanel.setParent(this);
-        //hideButton = new JButton("Switch to full-size puzzle");
+        hideButton = new JButton("Switch to full-size puzzle");
         //toolPanel.add(hideButton);
 
 
@@ -207,6 +200,8 @@ public class MainFrame extends JFrame  {
 
         add(contentPanel);
     }
+
+
 
 
     // removed extramethod

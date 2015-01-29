@@ -132,7 +132,7 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
 
     private boolean testComplete() {
         for (FPCell cell : this) {
-            if (cell.getValue() != -1 && cell.getPosition() != cell.getValue()) {
+            if (cell.getValue() != -1 && cell.getPosition() != cell.getValue() - 1) {
                 return false;
             }
         }
