@@ -7,14 +7,13 @@ import java.io.*;
 public class Serializator {
 
     public boolean save(FPPuzzle puzzle, String name) {
-        try {
-            FileOutputStream fos = new FileOutputStream(name);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(puzzle);
-            oos.flush();
-            oos.close();
-            fos.close();
-            return true;
+        try (FileOutputStream fos = new FileOutputStream(name)) {
+            try (ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+                oos.writeObject(puzzle);
+                oos.flush();
+                fos.flush();
+                return true;
+            }
         }
         catch (IOException ex) {
             ex.printStackTrace();
@@ -23,13 +22,11 @@ public class Serializator {
     }
 
     public FPPuzzle open(String name) {
-        try {
-            FileInputStream fis = new FileInputStream(name);
-            ObjectInputStream oin = new ObjectInputStream(fis);
-            FPPuzzle puzzle = (FPPuzzle) oin.readObject();
-            oin.close();
-            fis.close();
-            return puzzle;
+        try (FileInputStream fis = new FileInputStream(name)) {
+            try (ObjectInputStream oin = new ObjectInputStream(fis)) {
+                FPPuzzle puzzle = (FPPuzzle) oin.readObject();
+                return puzzle;
+            }
         }
         catch (IOException | ClassNotFoundException ex) {
             ex.printStackTrace();
