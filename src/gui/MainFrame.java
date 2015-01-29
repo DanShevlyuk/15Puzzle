@@ -22,10 +22,9 @@ public class MainFrame extends JFrame  {
 
         Dimension screen = tk.getScreenSize();
         setLocation((int) screen.getWidth() / 4, (int) screen.getHeight() / 4);
-        pack();
         setVisible(true);
         puzzlePanel.makeCellViewsResizable();
-        Component glassPane = getGlassPane();
+        pack();
 
     }
 
@@ -34,6 +33,7 @@ public class MainFrame extends JFrame  {
         //TODO: add  puzzlePanel to MainFrame
         puzzlePanel = new FRPuzzlePanel();
         add(puzzlePanel);
+        puzzlePanel.setParent(this);
     }
 
 
@@ -49,7 +49,6 @@ public class MainFrame extends JFrame  {
 
     public static void main(String[] args) {
         new MainFrame();
-
     }
 
 
