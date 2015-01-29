@@ -13,6 +13,12 @@ public class MainFrame extends JFrame  {
     private FRPuzzlePanel puzzlePanel;
     private AwesomeButton newGameButton;
     private JPanel toolPanel;
+    private JMenuBar menuBar;
+    private JMenu menu;
+    private JMenuItem newGame;
+    private JMenuItem saveGame;
+    private JMenuItem openGame;
+    private JFileChooser fileChooser;
 
     public MainFrame() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -38,7 +44,29 @@ public class MainFrame extends JFrame  {
         });
         pack();
 
+        newGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                contentPanel.removeAll();
+                contentPanel.add(toolPanel);
+                buildPuzzlePanel();
+                contentPanel.repaint();
+            }
+        });
 
+        saveGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
+
+        openGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
     }
 
@@ -56,6 +84,21 @@ public class MainFrame extends JFrame  {
 
         newGameButton = new AwesomeButton("New Game Bro");
         toolPanel = new JPanel(new FlowLayout());
+
+        fileChooser = new JFileChooser();
+        menuBar = new JMenuBar();
+        menu = new JMenu("Menu");
+        newGame = new JMenuItem("New Game");
+        saveGame = new JMenuItem("Save");
+        openGame = new JMenuItem("Open");
+        menu.add(newGame);
+        menu.addSeparator();
+        menu.add(openGame);
+        menu.addSeparator();
+        menu.add(saveGame);
+        menuBar.add(menu);
+        this.setJMenuBar(menuBar);
+
         toolPanel.setPreferredSize(new Dimension(100, 100));
         toolPanel.add(newGameButton);
         toolPanel.setVisible(true);
