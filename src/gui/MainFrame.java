@@ -1,8 +1,14 @@
 package gui;
 
+import model.FPPuzzle;
+import serializator.Serializator;
+
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
 /**
  * Main Frame for 15 Puzzle
@@ -22,6 +28,7 @@ public class MainFrame extends JFrame  {
     private JFileChooser fileChooser;
     private JButton hideButton;
     private boolean stuffOn = true;
+    private Serializator ser;
 
     public MainFrame() {
         setTitle("SWING, I HATE YOU");
@@ -60,14 +67,24 @@ public class MainFrame extends JFrame  {
         saveGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                fileChooser.setSelectedFile(null);
+                if (fileChooser.showSaveDialog(saveGame) == JFileChooser.APPROVE_OPTION) {
+                    String name = fileChooser.getSelectedFile().getName() + ".puz";
+                    ser.save(puzzlePanel.getPuzzle(), name);
+                }
             }
         });
 
         openGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                fileChooser.setSelectedFile(null);
+                if (fileChooser.showOpenDialog(openGame) == JFileChooser.APPROVE_OPTION) {
+                    String name = fileChooser.getSelectedFile().getName();
+                    FPPuzzle puzzle = ser.open(name);
+                    contentPanel.remove(puzzlePanel);
+                    buildPuzzlePanel(puzzle);
+                }
             }
 
         });
@@ -109,6 +126,15 @@ public class MainFrame extends JFrame  {
         puzzlePanel.makeCellViewsResizable();
     }
 
+    private void buildPuzzlePanel(FPPuzzle puzzle){
+        puzzlePanel = new FRPuzzlePanel();
+        contentPanel.addComponentListener(puzzlePanel);
+        puzzlePanel.setParent(this);
+        contentPanel.add(puzzlePanel);
+        puzzlePanel.initComponents(puzzle);
+        puzzlePanel.makeCellViewsResizable();
+    }
+
     private void initComponents() {
         contentPanel = new JPanel(new GridLayout(1, 2));
 
@@ -131,6 +157,11 @@ public class MainFrame extends JFrame  {
         menuBar.add(menu);
         this.setJMenuBar(menuBar);
 
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Puzzle files", "puz");
+        ser = new Serializator();
+        fileChooser.removeChoosableFileFilter(fileChooser.getFileFilter());
+        fileChooser.setFileFilter(filter);
+        fileChooser.setCurrentDirectory(new File("."));
         toolPanel.setPreferredSize(new Dimension(100, 100));
         toolPanel.add(newGameButton);
         toolPanel.setVisible(true);
