@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class FPPuzzle implements Iterable<FPCell> {
+public class FPPuzzle implements Iterable<FPCell>, Serializable {
 
     private List<FPCell> cells;
 

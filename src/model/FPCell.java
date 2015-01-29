@@ -1,6 +1,8 @@
 package model;
 
-public class FPCell implements Comparable<FPCell> {
+import java.io.Serializable;
+
+public class FPCell implements Comparable<FPCell>, Serializable {
     private int value;
     private boolean isEmpty;
     private int position;
