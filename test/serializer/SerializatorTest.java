@@ -11,11 +11,11 @@ import static org.junit.Assert.assertEquals;
 
 public class SerializatorTest {
 
-    private Serializator ser;
+    private Serializer ser;
     private FPPuzzle puzzle;
     @Before
     public void setUp() throws Exception {
-        ser = new Serializator();
+        ser = new Serializer();
         puzzle = new FPPuzzle();
     }
 
