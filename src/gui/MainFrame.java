@@ -1,7 +1,8 @@
 package gui;
 
 import model.FPPuzzle;
-import serializator.Serializator;
+import serializer.Serializator;
+import serializer.Serializer;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -11,7 +12,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 /**
- * Main game window 
+ * Main game window
  *
  */
 public class MainFrame extends JFrame  {
@@ -29,11 +30,11 @@ public class MainFrame extends JFrame  {
     private JButton hideButton;
 
     private boolean stuffOn = true;
-    private Serializator ser;
+    private Serializer serializer;
 
 
     public MainFrame() {
-        setTitle("SWING, I HATE YOU");
+        setTitle("I love this game.");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         initComponents();
         setContentPane(contentPanel);
@@ -53,6 +54,7 @@ public class MainFrame extends JFrame  {
                 contentPanel.repaint();
             }
         });
+
         setPreferredSize(new Dimension(800, 500));
         pack();
 
@@ -72,7 +74,7 @@ public class MainFrame extends JFrame  {
                 fileChooser.setSelectedFile(null);
                 if (fileChooser.showSaveDialog(saveGame) == JFileChooser.APPROVE_OPTION) {
                     String name = fileChooser.getSelectedFile().getName() + ".puz";
-                    ser.save(puzzlePanel.getPuzzle(), name);
+                    serializer.save(puzzlePanel.getPuzzle(), name);
                 }
             }
         });
@@ -83,7 +85,7 @@ public class MainFrame extends JFrame  {
                 fileChooser.setSelectedFile(null);
                 if (fileChooser.showOpenDialog(openGame) == JFileChooser.APPROVE_OPTION) {
                     String name = fileChooser.getSelectedFile().getName();
-                    FPPuzzle puzzle = ser.open(name);
+                    FPPuzzle puzzle = serializer.open(name);
                     contentPanel.remove(puzzlePanel);
                     buildPuzzlePanel(puzzle);
                 }
@@ -126,7 +128,7 @@ public class MainFrame extends JFrame  {
         puzzlePanel.makeCellViewsResizable();
     }
 
-    private void buildPuzzlePanel(FPPuzzle puzzle){
+    private void buildPuzzlePanel(FPPuzzle puzzle) {
         puzzlePanel = new FRPuzzlePanel();
         contentPanel.addComponentListener(puzzlePanel);
         contentPanel.add(puzzlePanel);
@@ -156,7 +158,7 @@ public class MainFrame extends JFrame  {
         this.setJMenuBar(menuBar);
 
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Puzzle files", "puz");
-        ser = new Serializator();
+        serializer = new Serializer();
         fileChooser.removeChoosableFileFilter(fileChooser.getFileFilter());
         fileChooser.setFileFilter(filter);
         fileChooser.setCurrentDirectory(new File(""));
@@ -164,12 +166,11 @@ public class MainFrame extends JFrame  {
         toolPanel.setVisible(true);
 
 
-        JLabel lab = new JLabel("SEX");
+        JLabel stepsCounter = new JLabel("SEX");
 
-        lab.setFont(new Font("Arial", Font.PLAIN, 72));
-        lab.setHorizontalAlignment(SwingConstants.CENTER);
-        toolPanel.add(lab);
-
+        stepsCounter.setFont(new Font("Arial", Font.PLAIN, 72));
+        stepsCounter.setHorizontalAlignment(SwingConstants.CENTER);
+        toolPanel.add(stepsCounter);
 
         puzzlePanel = new FRPuzzlePanel();
         contentPanel.add(toolPanel);
