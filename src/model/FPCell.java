@@ -1,6 +1,6 @@
 package model;
 
-public class FPCell  {
+public class FPCell implements Comparable<FPCell> {
     private int value;
     private boolean isEmpty;
     private int position;
@@ -33,6 +33,11 @@ public class FPCell  {
 
     public void setEmpty(boolean isEmpty) {
         this.isEmpty = isEmpty;
+    }
+
+    @Override
+    public int compareTo(FPCell o) {
+        return this.getValue() < o.getValue() ? -1 : (this.getValue() == o.getValue() ? 0 : 1);
     }
 
     // Mouse Events occurred in View
