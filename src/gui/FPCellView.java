@@ -54,8 +54,24 @@ public class FPCellView extends JComponent implements ComponentListener {
 
         Graphics2D g2 = (Graphics2D)g;
         g2.draw(new Rectangle2D.Double(0, 0, componentWidth , componentHeight ));
-        String str = Integer.toString(model.getValue());
-        g2.drawString(str, componentWidth/2, componentHeight/2);
+        int value = model.getValue();
+        if (value == -1) {
+            Rectangle2D.Double rect = new Rectangle2D.Double(0, 0, componentWidth , componentHeight );
+            g2.setColor(Color.DARK_GRAY);
+            g2.fill(rect);
+        } else {
+
+            if (model.getPosition() == (model.getValue()) - 1){
+                Rectangle2D.Double rect = new Rectangle2D.Double(1, 1, componentWidth-2, componentHeight-2);
+                g2.setColor(Color.GREEN);
+                g2.fill(rect);
+                g2.setColor(Color.black);
+            }
+            String str = Integer.toString(value);
+            g2.drawString(str, componentWidth/2, componentHeight/2);
+        }
+
+
     }
 
     @Override
