@@ -42,20 +42,13 @@ public class FPPuzzle implements Iterable<FPCell> {
      * return true, когда все ок и false, когда передивнуть не удалось
      */
     public boolean moveMePlease(int index) {
-        //проверить можно ли двигать
-        // подвинуть, если можно и вернуть true
-
-        int moveto = moveTo(index);
-        if (moveto != -1) {
-            swap(index, moveto);
+        int whereToMove = moveTo(index);
+        if (whereToMove != -1) {
+            swap(index, whereToMove);
             return true;
         }
 
-        // как двигать: присвоить значение index-а пустой
-        // и сделать index пустой (очевидно)
-        // если нельзя, то false
         return false;
-
     }
 
     private void swap(int pos1, int pos2) {
