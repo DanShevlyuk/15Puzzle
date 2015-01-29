@@ -49,18 +49,14 @@ public class FPPuzzle implements Iterable<FPCell> {
         //проверить можно ли двигать
         // подвинуть, если можно и вернуть true
 
-        int moveto = moveTo(index);
-        if (moveto != -1) {
-            swap(index, moveto);
+        int whereToMove = moveTo(index);
+        if (whereToMove != -1) {
+            swap(index, whereToMove);
             complete = testComplete();
             return true;
         }
 
-        // как двигать: присвоить значение index-а пустой
-        // и сделать index пустой (очевидно)
-        // если нельзя, то false
         return false;
-
     }
 
     private void swap(int pos1, int pos2) {

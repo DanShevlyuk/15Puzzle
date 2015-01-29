@@ -13,7 +13,7 @@ import java.beans.PropertyChangeListener;
 /**
  * Игровое поле с клетками
  */
-public class FRPuzzlePanel extends JPanel {
+public class FRPuzzlePanel extends JPanel implements ModelChangeListener {
     private FPPuzzle puzzle;
     private FPCellView cellViews[];
     //TODO: добавить размеры пазла и размер одной клетки и использовать их в cellClicked
@@ -21,7 +21,7 @@ public class FRPuzzlePanel extends JPanel {
     public FRPuzzlePanel() {
         setLayout(new GridLayout(4, 4));
         initComponents();
-
+        puzzle.setMyView(this);
     }
 
 
@@ -38,6 +38,7 @@ public class FRPuzzlePanel extends JPanel {
             cellViews[i] = new FPCellView(puzzle.get(i));
             add(cellViews[i]);
         }
+        puzzleListenToCells();
 
     }
 
@@ -53,10 +54,16 @@ public class FRPuzzlePanel extends JPanel {
 
 
     public void puzzleListenToCells() {
-
+        for (int i = 0; i < cellViews.length; i++) {
+            cellViews[i].addMouseListener(puzzle);
+        }
     }
 
 
-
-
+    @Override
+    public void modelChanged() {
+        for (int i = 0; i < cellViews.length; i++) {
+            cellViews[i].repaint();
+        }
+    }
 }
