@@ -7,8 +7,7 @@ public class FPPuzzle implements Iterable<FPCell> {
     private List<FPCell> cells;
 
     private int emptyCellIndex;
-    private final int width;
-    private final int height;
+    private final int sizeofside;
     private final int puzzleSize;
     private boolean complete = false;
 
@@ -16,12 +15,12 @@ public class FPPuzzle implements Iterable<FPCell> {
 
 
     public FPPuzzle() {
-        this(16);
+        this(4);
     }
 
-    public FPPuzzle(int size) {
-        width = height = (int)Math.sqrt(size);
-        puzzleSize = size;
+    public FPPuzzle(int sizeofside) {
+        this.sizeofside = sizeofside;
+        puzzleSize = sizeofside * sizeofside;
         do {
             cells = new ArrayList<>();
             Set<Integer> usedNumbers = new HashSet<>();
@@ -96,17 +95,17 @@ public class FPPuzzle implements Iterable<FPCell> {
     }
 
     private int moveTo(int i) {
-        if ((i % width != 0) && cells.get(i - 1).isEmpty()) {
+        if ((i % sizeofside != 0) && cells.get(i - 1).isEmpty()) {
             return i - 1;
         }
-        else if (((i + 1) % width != 0) && cells.get(i + 1).isEmpty()) {
+        else if (((i + 1) % sizeofside != 0) && cells.get(i + 1).isEmpty()) {
             return i + 1;
         }
-        else if (i + width < cells.size() && cells.get(i + width).isEmpty()) {
-            return i + width;
+        else if (i + sizeofside < cells.size() && cells.get(i + sizeofside).isEmpty()) {
+            return i + sizeofside;
         }
-        else if (i - width >= 0 && cells.get(i - width).isEmpty()) {
-            return i - width;
+        else if (i - sizeofside >= 0 && cells.get(i - sizeofside).isEmpty()) {
+            return i - sizeofside;
         }
         else {
             return - 1;
