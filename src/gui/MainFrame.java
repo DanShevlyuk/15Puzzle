@@ -46,6 +46,16 @@ public class MainFrame extends JFrame  {
         setPreferredSize(new Dimension(800, 500));
         pack();
 
+        newGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                contentPanel.removeAll();
+                contentPanel.add(toolPanel);
+                buildPuzzlePanel();
+                contentPanel.repaint();
+            }
+        });
+
         saveGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
