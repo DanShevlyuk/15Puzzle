@@ -18,7 +18,10 @@ public class MainFrame extends JFrame  {
     private JMenuItem newGame;
     private JMenuItem saveGame;
     private JMenuItem openGame;
+    private JMenuItem stuff;
     private JFileChooser fileChooser;
+    private JButton hideButton;
+    private boolean stuffOn = true;
 
     public MainFrame() {
         setTitle("SWING, I HATE YOU");
@@ -31,8 +34,6 @@ public class MainFrame extends JFrame  {
         Dimension screen = tk.getScreenSize();
         setLocation((int) screen.getWidth() / 4, (int) screen.getHeight() / 4);
         setVisible(true);
-
-
         puzzlePanel.makeCellViewsResizable();
         newGameButton.addActionListener(new ActionListener() {
             @Override
@@ -68,6 +69,33 @@ public class MainFrame extends JFrame  {
             public void actionPerformed(ActionEvent e) {
 
             }
+
+        });
+
+        hideButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                contentPanel.remove(toolPanel);
+                contentPanel.repaint();
+                contentPanel.updateUI();
+                stuffOn = false;
+                stuff.setEnabled(true);
+            }
+        });
+
+        stuff.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!stuffOn) {
+                    contentPanel.removeAll();
+                    contentPanel.add(toolPanel);
+                    contentPanel.add(puzzlePanel);
+                    contentPanel.repaint();
+                    contentPanel.updateUI();
+                    stuffOn = true;
+                    stuff.setEnabled(false);
+                }
+            }
         });
     }
 
@@ -93,6 +121,8 @@ public class MainFrame extends JFrame  {
         newGame = new JMenuItem("New Game");
         saveGame = new JMenuItem("Save");
         openGame = new JMenuItem("Open");
+        stuff = new JMenuItem("Return stuff");
+        menu.add(stuff);
         menu.add(newGame);
         menu.addSeparator();
         menu.add(openGame);
@@ -112,9 +142,12 @@ public class MainFrame extends JFrame  {
         contentPanel.addComponentListener(puzzlePanel);
 
         puzzlePanel.setParent(this);
+        hideButton = new JButton("Switch to full-size puzzle");
+        toolPanel.add(hideButton);
 
-
-
+        if (stuffOn) {
+            stuff.setEnabled(false);
+        }
 
         add(contentPanel);
     }
