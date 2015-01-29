@@ -7,3 +7,6 @@ out/
 #OS X stuff
 .DS_Store
 .Trashes
+
+#Puzzle file
+*.puz
