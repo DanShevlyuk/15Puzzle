@@ -122,6 +122,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
             }
         }
         updateUI();
+        parent.setCountLabel("" + puzzle.getSteps());
         repaint();
     }
 

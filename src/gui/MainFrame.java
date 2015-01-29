@@ -1,7 +1,6 @@
 package gui;
 
 import model.FPPuzzle;
-import serializer.Serializator;
 import serializer.Serializer;
 
 import javax.swing.*;
@@ -18,7 +17,6 @@ import java.io.File;
 public class MainFrame extends JFrame  {
     protected JPanel contentPanel;
     protected FRPuzzlePanel puzzlePanel;
-    private AwesomeButton newGameButton;
     protected JPanel toolPanel;
     private JMenuBar menuBar;
     private JMenu menu;
@@ -28,7 +26,7 @@ public class MainFrame extends JFrame  {
     private JMenuItem stuff;
     private JFileChooser fileChooser;
     private JMenuItem hideButton;
-    private JLabel countLabel;
+    private JLabel stepsCounter;
 
     private boolean stuffOn = true;
     private Serializer serializer;
@@ -46,15 +44,6 @@ public class MainFrame extends JFrame  {
         setLocation((int) screen.getWidth() / 4, (int) screen.getHeight() / 4);
         setVisible(true);
         puzzlePanel.makeCellViewsResizable();
-        newGameButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                contentPanel.removeAll();
-                contentPanel.add(toolPanel);
-                buildPuzzlePanel();
-                contentPanel.repaint();
-            }
-        });
 
         setPreferredSize(new Dimension(800, 500));
         pack();
@@ -66,6 +55,7 @@ public class MainFrame extends JFrame  {
                 contentPanel.add(toolPanel);
                 buildPuzzlePanel();
                 contentPanel.repaint();
+                stepsCounter.setText("0");
             }
         });
 
@@ -131,6 +121,7 @@ public class MainFrame extends JFrame  {
         contentPanel.add(puzzlePanel);
         puzzlePanel.initComponents();
         puzzlePanel.makeCellViewsResizable();
+        puzzlePanel.setParent(this);
     }
 
     private void buildPuzzlePanel(FPPuzzle puzzle) {
@@ -139,11 +130,11 @@ public class MainFrame extends JFrame  {
         contentPanel.add(puzzlePanel);
         puzzlePanel.initComponents(puzzle);
         puzzlePanel.makeCellViewsResizable();
+        puzzlePanel.setParent(this);
     }
 
     private void initComponents() {
         contentPanel = new JPanel(new GridLayout(1, 2));
-        newGameButton = new AwesomeButton("New Game Bro");
         toolPanel = new JPanel(new GridLayout(1, 1));
 
         fileChooser = new JFileChooser();
@@ -175,7 +166,7 @@ public class MainFrame extends JFrame  {
         toolPanel.setVisible(true);
 
 
-        JLabel stepsCounter = new JLabel("SEX");
+        stepsCounter = new JLabel("0");
 
         stepsCounter.setFont(new Font("Arial", Font.PLAIN, 72));
         stepsCounter.setHorizontalAlignment(SwingConstants.CENTER);
@@ -191,16 +182,17 @@ public class MainFrame extends JFrame  {
         //hideButton = new JButton("Switch to full-size puzzle");
         //toolPanel.add(hideButton);
 
-        toolPanel.setPreferredSize(new Dimension(hideButton.getWidth(),
-                newGameButton.getHeight()));
+       // toolPanel.setPreferredSize(new Dimension(hideButton.getWidth(), newGameButton.getHeight()));
         if (stuffOn) {
             stuff.setEnabled(false);
         }
 
         add(contentPanel);
     }
-
-    // removed extramethod
+    
+    public void setCountLabel(String text) {
+        this.stepsCounter.setText(text);
+    }
 
     public static void main(String[] args) {
         new MainFrame();

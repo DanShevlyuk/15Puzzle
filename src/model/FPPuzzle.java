@@ -8,20 +8,20 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
     protected List<FPCell> cells;
 
     private int emptyCellIndex;
-    private final int sizeofside;
+    private final int sideSize;
     private final int puzzleSize;
     private boolean complete = false;
+    private int stepsCounter;
 
     private static final Random RANDOM = new Random();
-
 
     public FPPuzzle() {
         this(4);
     }
 
-    public FPPuzzle(int sizeofside) {
-        this.sizeofside = sizeofside;
-        puzzleSize = sizeofside * sizeofside;
+    public FPPuzzle(int sideSize) {
+        this.sideSize = sideSize;
+        puzzleSize = sideSize * sideSize;
         do {
             cells = new ArrayList<>();
             Set<Integer> usedNumbers = new HashSet<>();
@@ -41,12 +41,12 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
                 }
             }
 
+            stepsCounter = 0;
             emptyCellIndex = RANDOM.nextInt(puzzleSize);
             swap(emptyCellIndex, 0);
             complete = testComplete();
             solvability();
-        }
-        while (complete);
+        } while (complete);
     }
 
     /*
@@ -62,6 +62,7 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
         if (whereToMove != -1) {
             swap(index, whereToMove);
             complete = testComplete();
+            stepsCounter++;
             return true;
         }
 
@@ -80,11 +81,11 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
 
     private void solvability() {
         int chaosCount = 0;
-        int emptyindex = -1;
+        int emptyIndex = -1;
         for (int i = 0; i < puzzleSize - 1; i++) {
             FPCell cell = cells.get(i);
             if (cell.isEmpty()) {
-                emptyindex = cell.getPosition();
+                emptyIndex = cell.getPosition();
                 continue;
             }
             for (int j = i + 1; j < puzzleSize; j++) {
@@ -95,11 +96,11 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
         }
 
         if (chaosCount % 2 != 0) {
-            if (emptyindex > 2) {
-                swap(emptyindex - 1, emptyindex - 2);
+            if (emptyIndex > 2) {
+                swap(emptyIndex - 1, emptyIndex - 2);
             }
             else {
-                swap(emptyindex + 1, emptyindex + 2);
+                swap(emptyIndex + 1, emptyIndex + 2);
             }
         }
     }
@@ -109,17 +110,17 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
     }
 
     private int moveTo(int i) {
-        if ((i % sizeofside != 0) && cells.get(i - 1).isEmpty()) {
+        if ((i % sideSize != 0) && cells.get(i - 1).isEmpty()) {
             return i - 1;
         }
-        else if (((i + 1) % sizeofside != 0) && cells.get(i + 1).isEmpty()) {
+        else if (((i + 1) % sideSize != 0) && cells.get(i + 1).isEmpty()) {
             return i + 1;
         }
-        else if (i + sizeofside < cells.size() && cells.get(i + sizeofside).isEmpty()) {
-            return i + sizeofside;
+        else if (i + sideSize < cells.size() && cells.get(i + sideSize).isEmpty()) {
+            return i + sideSize;
         }
-        else if (i - sizeofside >= 0 && cells.get(i - sizeofside).isEmpty()) {
-            return i - sizeofside;
+        else if (i - sideSize >= 0 && cells.get(i - sideSize).isEmpty()) {
+            return i - sideSize;
         }
         else {
             return - 1;
@@ -128,6 +129,14 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
 
     public int getSize() {
         return puzzleSize;
+    }
+
+    public int getSideSize() {
+        return sideSize;
+    }
+
+    public int getSteps() {
+        return stepsCounter;
     }
 
     private boolean testComplete() {
