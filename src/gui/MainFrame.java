@@ -84,10 +84,13 @@ public class MainFrame extends JFrame  {
                     if (!name.endsWith(".puz")) {
                         name += ".puz";
                     }
-                    serializer = new Serializer(puzzlePanel.getPuzzle(), stopWatchUpdater.getTime());
+                    serializer = new Serializer(puzzlePanel.getPuzzle(),
+                            stopWatchUpdater.getTime());
                     Serializer.save(serializer, name);
                 }
-                timer.start();
+                if (!stopwatch.getText().equals("00:00:00")) {
+                    timer.start();
+                }
             }
         });
 
@@ -107,7 +110,7 @@ public class MainFrame extends JFrame  {
                     stopwatch.setText(time);
                     stepsCounter.setText(String.valueOf(puzzlePanel.getPuzzle().getSteps()));
                 }
-                else {
+                else if (!stopwatch.getText().equals("00:00:00")) {
                     timer.start();
                 }
             }
