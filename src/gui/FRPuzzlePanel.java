@@ -14,9 +14,11 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
     protected FPCellView cellViews[];
     private MainFrame parent;
     private final int panelSize;
+    private boolean runStopWatch;
 
     public FRPuzzlePanel(int size) {
         panelSize = size;
+        runStopWatch = true;
         GridLayout layout = new GridLayout(panelSize, panelSize);
         setLayout(layout);
     }
@@ -119,6 +121,10 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
         }
         updateUI();
         parent.setCountLabel("" + puzzle.getSteps());
+        if (runStopWatch) {
+            parent.runStopWatch();
+            runStopWatch = false;
+        }
         repaint();
     }
 
@@ -234,10 +240,16 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
             parent.setCountLabel("" + puzzle.getSteps());
             repaint();
         }
+
+        updateUI();
+        parent.setCountLabel("" + puzzle.getSteps());
+        if (runStopWatch) {
+            parent.runStopWatch();
+            runStopWatch = false;
+        }
+        repaint();
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
+    public void keyReleased(KeyEvent e) {}
 }
