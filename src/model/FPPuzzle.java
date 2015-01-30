@@ -144,7 +144,7 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
     }
 
     public int getRightIndexFromEmpty() {
-        if (emptyCellIndex < puzzleSize) {
+        if (emptyCellIndex < puzzleSize - 1) {
             return emptyCellIndex + 1;
         } else {
             return -1;
@@ -160,7 +160,7 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
     }
 
     public int getDownFromEmpty() {
-        if (emptyCellIndex <= puzzleSize - sideSize) {
+        if (emptyCellIndex <= puzzleSize - sideSize - 1) {
             return emptyCellIndex + sideSize;
         } else {
             return -1;
