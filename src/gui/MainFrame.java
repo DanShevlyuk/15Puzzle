@@ -40,6 +40,8 @@ public class MainFrame extends JFrame  {
         this.path = path;
         setTitle("I love this game.");
         this.setIconImage(new ImageIcon("resources/icon.png").getImage());
+        //this.setIconImage(new ImageIcon(getClass().getClassLoader().getResource("resources/icon" +
+        //        ".png")).getImage());
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         initComponents();
@@ -80,7 +82,19 @@ public class MainFrame extends JFrame  {
                 fileChooser.setSelectedFile(null);
                 timer.stop();
                 if (fileChooser.showSaveDialog(saveGame) == JFileChooser.APPROVE_OPTION) {
-                    String name = fileChooser.getSelectedFile().getAbsolutePath();
+                    File file = fileChooser.getSelectedFile();
+
+                    if (file.exists()) {
+                        int result = JOptionPane.showConfirmDialog(fileChooser,
+                                "File already exists\n Rewrite file?", "File already exists",
+                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                        if (result == JOptionPane.NO_OPTION || result == JOptionPane.CLOSED_OPTION) {
+                            actionPerformed(e);
+                            return;
+                        }
+                    }
+
+                    String name = file.getAbsolutePath();
                     if (!name.endsWith(".puz")) {
                         name += ".puz";
                     }
