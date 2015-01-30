@@ -43,7 +43,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
     }
 
     @Override
-    public Dimension getPreferredSize(){
+    public Dimension getPreferredSize() {
         return new Dimension((int)(4 * cellViews[0].getPreferredSize().getWidth()),
                 (int)(4 * cellViews[0].getPreferredSize().getHeight()) + 2);
     }
@@ -93,7 +93,6 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
             cellViews[i].addMouseListener(this);
         }
     }
-
 
     public void sortCellsByPosition() {
         cellViews = new FPCellView[puzzle.getSize()];

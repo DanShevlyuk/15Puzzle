@@ -167,12 +167,11 @@ public class MainFrame extends JFrame  {
         contentPanel.add(puzzlePanel);
         puzzlePanel.initComponents();
         contentPanel.addComponentListener(puzzlePanel);
-
         puzzlePanel.setParent(this);
 
         add(contentPanel);
     }
-    
+
     public void setCountLabel(String text) {
         this.stepsCounter.setText(text);
     }
