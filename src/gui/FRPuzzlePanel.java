@@ -9,12 +9,11 @@ import java.awt.event.*;
 /**
  * Игровое поле с клетками
  */
-public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentListener {
+public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentListener, KeyListener {
     protected FPPuzzle puzzle;
     protected FPCellView cellViews[];
 
     private MainFrame parent;
-    private int stepsCounter;
     //TODO: изменить 4 на puzzle.sideSize
     private GridLayout layout = new GridLayout(4, 4);
 
@@ -24,6 +23,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
 
     public void setParent(MainFrame parent) {
         this.parent = parent;
+       // parent.addKeyListener(this);
     }
 
     public void fillPaneSortedByPosition(){
@@ -182,31 +182,50 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
         //Затычка
     }
 
+    @Override
     public void keyTyped(KeyEvent e) {
-        System.out.println("Key pressed code=" + e.getKeyCode() + ", char=" + e.getKeyChar());
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() < KeyEvent.VK_LEFT || e.getKeyCode() > KeyEvent.VK_DOWN) {
+            return;
+        }
+
+        System.out.println("Key pressed code=" + e.getKeyCode());
 
         int moveMe = -1;
 
-        if (e.getKeyCode() == 37) {
-            moveMe = puzzle.getEmptyCellIndex() - 1;
-        } else if (e.getKeyCode() == 38) {
-            moveMe = puzzle.getEmptyCellIndex() - puzzle.getSize();
-        } else if (e.getKeyCode() == 39) {
-            moveMe = puzzle.getEmptyCellIndex() + 1;
-        } else if (e.getKeyCode() == 40) {
-            moveMe = puzzle.getEmptyCellIndex() + puzzle.getSize();
-        } else {
-            System.out.println("Dude!");
+        System.out.println("empty >>> " + puzzle.getEmptyCellIndex());
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            moveMe = puzzle.getRightIndexFromEmpty();
+            System.out.println("Duuuude! >>> " + moveMe);
+        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+            moveMe = puzzle.getDownFromEmpty();
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            moveMe = puzzle.getLeftIndexFromEmpty();
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            moveMe = puzzle.getUpFromEmpty();
         }
 
-        if (puzzle.moveMePlease(moveMe)){
-            fillPaneSortedByPosition();
-            if (puzzle.isComplete()){
-                fillWithCongratulations();
+        if (moveMe == -1) {
+            return;
+        } else {
+            if (puzzle.moveMePlease(moveMe)) {
+                fillPaneSortedByPosition();
+                if (puzzle.isComplete()) {
+                    fillWithCongratulations();
+                }
             }
+            updateUI();
+            parent.setCountLabel("" + puzzle.getSteps());
+            repaint();
         }
-        updateUI();
-        parent.setCountLabel("" + puzzle.getSteps());
-        repaint();
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
     }
 }
