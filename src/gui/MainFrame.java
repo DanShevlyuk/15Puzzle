@@ -30,13 +30,20 @@ public class MainFrame extends JFrame  {
     private StopWatchUpdater stopWatchUpdater;
     private JLabel stopwatch;
 
+    private String path;
     private int panelSize = 4;
 
     public MainFrame() {
+        this("");
+    }
+    public MainFrame(String path) {
+        this.path = path;
         setTitle("I love this game.");
         this.setIconImage(new ImageIcon("resources/icon.png").getImage());
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
         initComponents();
+
         setContentPane(contentPanel);
         Toolkit tk;
         tk = Toolkit.getDefaultToolkit();
@@ -171,6 +178,8 @@ public class MainFrame extends JFrame  {
         fileChooser.removeChoosableFileFilter(fileChooser.getFileFilter());
         fileChooser.setFileFilter(filter);
         fileChooser.setCurrentDirectory(new File(""));
+        fileChooser.setMultiSelectionEnabled(false);
+
         toolPanel.setPreferredSize(new Dimension(100, 100));
         toolPanel.setVisible(true);
 
@@ -186,15 +195,28 @@ public class MainFrame extends JFrame  {
         toolPanel.add(stepsCounter);
         toolPanel.add(stopwatch);
 
-        puzzlePanel = new FRPuzzlePanel(panelSize);
-        contentPanel.add(toolPanel);
-        contentPanel.add(puzzlePanel);
-        puzzlePanel.initComponents();
-        contentPanel.addComponentListener(puzzlePanel);
-        puzzlePanel.setParent(this);
-
         stopWatchUpdater = new StopWatchUpdater(stopwatch);
         timer = new Timer(1000, stopWatchUpdater);
+
+        puzzlePanel = new FRPuzzlePanel(panelSize);
+
+        if (path.equals("")) {
+            puzzlePanel.initComponents();
+        }
+        else {
+            serializer = Serializer.open(path);
+            puzzlePanel.initComponents(serializer.getPuzzle());
+            String time = serializer.getTime();
+            stopWatchUpdater.setTime(time);
+            stopwatch.setText(time);
+            stepsCounter.setText(String.valueOf(puzzlePanel.getPuzzle().getSteps()));
+        }
+
+        contentPanel.add(toolPanel);
+        contentPanel.add(puzzlePanel);
+
+        contentPanel.addComponentListener(puzzlePanel);
+        puzzlePanel.setParent(this);
 
         add(contentPanel);
     }
@@ -203,8 +225,15 @@ public class MainFrame extends JFrame  {
         this.stepsCounter.setText(text);
     }
 
+
     public static void main(String[] args) {
-        new MainFrame();
+        System.out.println("Open with " + args.length + " arguments");
+        if (args.length == 1) {
+            new MainFrame(args[0]);
+        }
+        else {
+            new MainFrame();
+        }
     }
 
     public void runStopWatch() {
