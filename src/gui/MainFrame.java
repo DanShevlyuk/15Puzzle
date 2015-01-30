@@ -8,6 +8,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.File;
 
 /**
@@ -18,7 +20,13 @@ public class MainFrame extends JFrame  {
     protected JPanel contentPanel;
     protected FRPuzzlePanel puzzlePanel;
     protected JPanel toolPanel;
+
     private JMenuItem newGame;
+    private JMenuItem newGame4;
+    private JMenuItem newGame6;
+    private JMenuItem newGame8;
+    private JMenuItem newGame10;
+
     private JMenuItem saveGame;
     private JMenuItem openGame;
     private JMenuItem info;
@@ -53,26 +61,17 @@ public class MainFrame extends JFrame  {
         setVisible(true);
         puzzlePanel.makeCellViewsResizable();
 
+        setMinimumSize(new Dimension(670, 440));
         setPreferredSize(new Dimension(800, 500));
+
         pack();
 
         this.addKeyListener(puzzlePanel);
 
-        newGame.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                contentPanel.removeAll();
-                if (info.isSelected()) {
-                    contentPanel.add(toolPanel);
-                }
-                timer.stop();
-                stopWatchUpdater.drop();
-                buildPuzzlePanel();
-                contentPanel.repaint();
-                stepsCounter.setText("0");
-                stopwatch.setText("00:00:00");
-            }
-        });
+        newGame4.addActionListener(new NewGameListener());
+        newGame6.addActionListener(new NewGameListener());
+        newGame8.addActionListener(new NewGameListener());
+        newGame10.addActionListener(new NewGameListener());
 
         saveGame.addActionListener(new ActionListener() {
             @Override
@@ -86,7 +85,8 @@ public class MainFrame extends JFrame  {
                         int result = JOptionPane.showConfirmDialog(fileChooser,
                                 "File already exists\n Rewrite file?", "File already exists",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                        if (result == JOptionPane.NO_OPTION || result == JOptionPane.CLOSED_OPTION) {
+                        if (result == JOptionPane.NO_OPTION ||
+                                result == JOptionPane.CLOSED_OPTION) {
                             actionPerformed(e);
                             return;
                         }
@@ -118,7 +118,9 @@ public class MainFrame extends JFrame  {
                     String time = serializer.getTime();
                     stopWatchUpdater.setTime(time);
                     contentPanel.remove(puzzlePanel);
+                    panelSize = puzzle.getSideSize();
                     buildPuzzlePanel(puzzle);
+
                     stopwatch.setText(time);
                     stepsCounter.setText(String.valueOf(puzzlePanel.getPuzzle().getSteps()));
                 }
@@ -142,9 +144,23 @@ public class MainFrame extends JFrame  {
                 contentPanel.updateUI();
             }
         });
+
+        //тут должен меняться размер лэйблов
+        //но меняется он хуево
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                stepsCounter.setFont(new Font("Arial", Font.PLAIN,
+                        2 * (getHeight() / 100) * (getWidth() / 100)));
+
+                stopwatch.setFont(new Font("Arial", Font.PLAIN,
+                        3 * (toolPanel.getHeight() / 100) * (toolPanel.getWidth() / 100)));
+            }
+        });
     }
 
-    private void buildPuzzlePanel(){
+    private void buildPuzzlePanel() {
         puzzlePanel = new FRPuzzlePanel(panelSize);
         contentPanel.addComponentListener(puzzlePanel);
         contentPanel.add(puzzlePanel);
@@ -170,15 +186,23 @@ public class MainFrame extends JFrame  {
 
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Menu");
-        newGame = new JMenuItem("New Game");
+        newGame = new JMenu("New Game");
+        newGame4 = new JMenuItem("4x4");
+        newGame6 = new JMenuItem("6x6");
+        newGame8 = new JMenuItem("8x8");
+        newGame10 = new JMenuItem("10x10");
+
         saveGame = new JMenuItem("Save");
         openGame = new JMenuItem("Open");
-
         info = new JCheckBoxMenuItem("Additional info");
 
         info.setEnabled(true);
         info.setSelected(true);
 
+        newGame.add(newGame4);
+        newGame.add(newGame6);
+        newGame.add(newGame8);
+        newGame.add(newGame10);
         menu.add(newGame);
         menu.addSeparator();
         menu.add(openGame);
@@ -198,13 +222,10 @@ public class MainFrame extends JFrame  {
         toolPanel.setPreferredSize(new Dimension(100, 100));
         toolPanel.setVisible(true);
 
-
         stepsCounter = new JLabel("0");
-        stepsCounter.setFont(new Font("Arial", Font.PLAIN, 72));
         stepsCounter.setHorizontalAlignment(SwingConstants.CENTER);
 
         stopwatch = new JLabel("00:00:00");
-        stopwatch.setFont(new Font("Arial", Font.PLAIN, 72));
         stopwatch.setHorizontalAlignment(SwingConstants.CENTER);
 
         toolPanel.add(stepsCounter);
@@ -257,5 +278,33 @@ public class MainFrame extends JFrame  {
 
     public void stopStopWatch() {
         timer.stop();
+    }
+
+    class NewGameListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == newGame4) {
+                panelSize = 4;
+            }
+            else if (e.getSource() == newGame6) {
+                panelSize = 6;
+            }
+            else if (e.getSource() == newGame8) {
+                panelSize = 8;
+            }
+            else {
+                panelSize = 10;
+            }
+            contentPanel.removeAll();
+            if (info.isSelected()) {
+                contentPanel.add(toolPanel);
+            }
+            timer.stop();
+            stopWatchUpdater.drop();
+            buildPuzzlePanel();
+            contentPanel.repaint();
+            stepsCounter.setText("0");
+            stopwatch.setText("00:00:00");
+        }
     }
 }
