@@ -38,10 +38,8 @@ public class MainFrame extends JFrame  {
     }
     public MainFrame(String path) {
         this.path = path;
-        setTitle("I love this game.");
+        setTitle("15Puzzle");
         this.setIconImage(new ImageIcon("resources/icon.png").getImage());
-        //this.setIconImage(new ImageIcon(getClass().getClassLoader().getResource("resources/icon" +
-        //        ".png")).getImage());
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         initComponents();
@@ -176,7 +174,7 @@ public class MainFrame extends JFrame  {
         saveGame = new JMenuItem("Save");
         openGame = new JMenuItem("Open");
 
-        info = new JCheckBoxMenuItem("Stuff");
+        info = new JCheckBoxMenuItem("Additional info");
 
         info.setEnabled(true);
         info.setSelected(true);
