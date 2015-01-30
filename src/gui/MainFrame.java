@@ -1,6 +1,6 @@
 package gui;
 
-import com.apple.eawt.Application;
+//import com.apple.eawt.Application;
 import model.FPPuzzle;
 import serializer.Serializer;
 
@@ -53,7 +53,7 @@ public class MainFrame extends JFrame implements WinEventListener {
         this.setIconImage(new ImageIcon("resources/icon.png").getImage());
 
         // dock icon for Mac
-        Application.getApplication().setDockIconImage(new ImageIcon("resources/icon.png").getImage());
+        //Application.getApplication().setDockIconImage(new ImageIcon("resources/icon.png").getImage());
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
