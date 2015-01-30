@@ -1,7 +1,5 @@
 package gui;
 
-//import com.apple.eawt.Application;
-
 import model.FPPuzzle;
 import serializer.Serializer;
 
@@ -75,8 +73,6 @@ public class MainFrame extends JFrame implements WinEventListener {
         setPreferredSize(new Dimension(800, 500));
 
         pack();
-
-        this.addKeyListener(puzzlePanel);
 
         newGame4.addActionListener(new NewGameListener());
         newGame6.addActionListener(new NewGameListener());
@@ -268,6 +264,8 @@ public class MainFrame extends JFrame implements WinEventListener {
         puzzlePanel.setParent(this);
 
         puzzlePanel.setWinListener(this);
+
+        this.addKeyListener(puzzlePanel);
 
         add(contentPanel);
     }

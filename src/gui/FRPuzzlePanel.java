@@ -5,7 +5,7 @@ import model.FPPuzzle;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
+
 
 /**
  * Игровое поле с клетками
@@ -37,7 +37,6 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
 
     public void setParent(MainFrame parent) {
         this.parent = parent;
-       // parent.addKeyListener(this);
     }
 
     public void fillPaneSortedByPosition(){
