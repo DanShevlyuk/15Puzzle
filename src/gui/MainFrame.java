@@ -14,7 +14,7 @@ import java.io.File;
  * Main game window
  *
  */
-public class MainFrame extends JFrame  {
+public class MainFrame extends JFrame implements WinEventListener {
     protected JPanel contentPanel;
     protected FRPuzzlePanel puzzlePanel;
     protected JPanel toolPanel;
@@ -61,15 +61,10 @@ public class MainFrame extends JFrame  {
         newGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                contentPanel.removeAll();
-                if (info.isSelected()) {
-                    contentPanel.add(toolPanel);
-                }
+
                 timer.stop();
                 stopWatchUpdater.drop();
-                buildPuzzlePanel();
-                contentPanel.repaint();
-                stepsCounter.setText("0");
+                startNewGame();
                 stopwatch.setText("00:00:00");
             }
         });
@@ -241,6 +236,16 @@ public class MainFrame extends JFrame  {
     }
 
 
+    public void startNewGame(){
+        contentPanel.removeAll();
+        if (info.isSelected()) {
+            contentPanel.add(toolPanel);
+        }
+        buildPuzzlePanel();
+        contentPanel.repaint();
+        stepsCounter.setText("0");
+    }
+
     public static void main(String[] args) {
         System.out.println("Open with " + args.length + " arguments");
         if (args.length == 1) {
@@ -257,5 +262,58 @@ public class MainFrame extends JFrame  {
 
     public void stopStopWatch() {
         timer.stop();
+    }
+
+    private class DialogWindow  extends JDialog{
+
+        JPanel buttonPanel;
+        JPanel contentPanel;
+
+        public DialogWindow(MainFrame owner) {
+            super(owner, "sexy winner bra", true);
+            contentPanel = new JPanel();
+            setContentPane(contentPanel);
+            buttonPanel = new JPanel();
+            JButton button1 = new JButton("New Game");
+            JButton button2 = new JButton("Exit");
+            JLabel label = new JLabel("Your Dick is Big! Wanna More?");
+
+            buttonPanel.add(button1);
+            buttonPanel.add(button2);
+            contentPanel.add(label, BorderLayout.CENTER);
+            contentPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+
+            button1.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    MainFrame parent = (MainFrame) owner;
+                    parent.startNewGame();
+                }
+            });
+
+            button2.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    setVisible(false);
+                    owner.dispose();
+                }
+            });
+
+            pack();
+
+            setVisible(false);
+
+        }
+
+    }
+
+
+    @Override
+    public void youWon() {
+        DialogWindow dialogWindow = new DialogWindow(this);
+        dialogWindow.setVisible(true);
+        ImageIcon icon = new ImageIcon();
+
     }
 }
