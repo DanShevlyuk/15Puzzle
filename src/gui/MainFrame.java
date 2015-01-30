@@ -264,8 +264,8 @@ public class MainFrame extends JFrame implements WinEventListener {
 
         contentPanel.addComponentListener(puzzlePanel);
         puzzlePanel.setParent(this);
-
         puzzlePanel.setWinListener(this);
+        this.addKeyListener(puzzlePanel);
 
         add(contentPanel);
     }
