@@ -40,7 +40,7 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
             emptyCellIndex = RANDOM.nextInt(puzzleSize);
             swap(emptyCellIndex, 0);
             complete = testComplete();
-        } while (complete && !canSolve());
+        } while (complete || !canSolve());
     }
 
     /*

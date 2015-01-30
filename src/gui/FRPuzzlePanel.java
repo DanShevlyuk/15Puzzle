@@ -4,10 +4,7 @@ import model.FPPuzzle;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 
 /**
  * Игровое поле с клетками
@@ -183,5 +180,33 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
     @Override
     public void componentHidden(ComponentEvent e) {
         //Затычка
+    }
+
+    public void keyTyped(KeyEvent e) {
+        System.out.println("Key pressed code=" + e.getKeyCode() + ", char=" + e.getKeyChar());
+
+        int moveMe = -1;
+
+        if (e.getKeyCode() == 37) {
+            moveMe = puzzle.getEmptyCellIndex() - 1;
+        } else if (e.getKeyCode() == 38) {
+            moveMe = puzzle.getEmptyCellIndex() - puzzle.getSize();
+        } else if (e.getKeyCode() == 39) {
+            moveMe = puzzle.getEmptyCellIndex() + 1;
+        } else if (e.getKeyCode() == 40) {
+            moveMe = puzzle.getEmptyCellIndex() + puzzle.getSize();
+        } else {
+            System.out.println("Dude!");
+        }
+
+        if (puzzle.moveMePlease(moveMe)){
+            fillPaneSortedByPosition();
+            if (puzzle.isComplete()){
+                fillWithCongratulations();
+            }
+        }
+        updateUI();
+        parent.setCountLabel("" + puzzle.getSteps());
+        repaint();
     }
 }
