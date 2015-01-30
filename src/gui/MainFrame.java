@@ -274,6 +274,8 @@ public class MainFrame extends JFrame implements WinEventListener {
         buildPuzzlePanel();
         contentPanel.repaint();
         stepsCounter.setText("0");
+        stopWatchUpdater.drop();
+        stopwatch.setText("00:00:00");
     }
 
     public static void main(String[] args) {
@@ -362,6 +364,7 @@ public class MainFrame extends JFrame implements WinEventListener {
 
     @Override
     public void youWon() {
+        timer.stop();
         DialogWindow dialogWindow = new DialogWindow(this);
         dialogWindow.setVisible(true);
         ImageIcon icon = new ImageIcon();
