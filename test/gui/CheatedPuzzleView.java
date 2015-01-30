@@ -1,11 +1,10 @@
 package gui;
 
-import model.FPPuzzle;
-
-/**
- * Created by reqwy on 29.01.2015.
- */
 public class CheatedPuzzleView extends FRPuzzlePanel {
+
+    public CheatedPuzzleView(int size) {
+        super(size);
+    }
 
     @Override
     public void initComponents(){
@@ -14,8 +13,8 @@ public class CheatedPuzzleView extends FRPuzzlePanel {
         for (int i = 0; i < cellViews.length; i++) {
             cellViews[i] = new FPCellView(puzzle.get(i));
         }
-        for (int i = 0; i < cellViews.length; i++) {
-            add(cellViews[i]);
+        for (FPCellView cellView : cellViews) {
+            add(cellView);
         }
         panelListenToCells();
         repaint();

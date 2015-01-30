@@ -9,10 +9,11 @@ import java.io.File;
 
 import static org.junit.Assert.assertEquals;
 
-public class SerializatorTest {
+public class SerializerTest {
 
     private Serializer ser;
     private FPPuzzle puzzle;
+
     @Before
     public void setUp() throws Exception {
         ser = new Serializer();

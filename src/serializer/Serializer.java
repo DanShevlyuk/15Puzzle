@@ -24,8 +24,7 @@ public class Serializer {
     public FPPuzzle open(String name) {
         try (FileInputStream fis = new FileInputStream(name)) {
             try (ObjectInputStream oin = new ObjectInputStream(fis)) {
-                FPPuzzle puzzle = (FPPuzzle) oin.readObject();
-                return puzzle;
+                return (FPPuzzle) oin.readObject();
             }
         }
         catch (IOException | ClassNotFoundException ex) {
