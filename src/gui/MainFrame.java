@@ -73,8 +73,6 @@ public class MainFrame extends JFrame implements WinEventListener {
 
         pack();
 
-        this.addKeyListener(puzzlePanel);
-
         newGame4.addActionListener(new NewGameListener());
         newGame6.addActionListener(new NewGameListener());
         newGame8.addActionListener(new NewGameListener());
@@ -264,6 +262,8 @@ public class MainFrame extends JFrame implements WinEventListener {
         puzzlePanel.setParent(this);
 
         puzzlePanel.addWinListener(this);
+
+        this.addKeyListener(puzzlePanel);
 
         add(contentPanel);
     }

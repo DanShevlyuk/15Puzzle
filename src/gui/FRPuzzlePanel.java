@@ -39,7 +39,6 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
 
     public void setParent(MainFrame parent) {
         this.parent = parent;
-       // parent.addKeyListener(this);
     }
 
     public void fillPaneSortedByPosition(){
