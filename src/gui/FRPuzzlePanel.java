@@ -48,7 +48,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
     }
 
     public void initComponents() {
-        puzzle = new FPPuzzle();
+        puzzle = new FPPuzzle(panelSize);
         init();
     }
 
