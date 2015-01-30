@@ -18,17 +18,12 @@ public class MainFrame extends JFrame  {
     protected JPanel contentPanel;
     protected FRPuzzlePanel puzzlePanel;
     protected JPanel toolPanel;
-    private JMenuBar menuBar;
-    private JMenu menu;
     private JMenuItem newGame;
     private JMenuItem saveGame;
     private JMenuItem openGame;
-    private JMenuItem stuff;
+    private JMenuItem info;
     private JFileChooser fileChooser;
-    private JMenuItem hideButton;
     private JLabel stepsCounter;
-
-    private boolean stuffOn = true;
     private Serializer serializer;
 
 
@@ -52,7 +47,9 @@ public class MainFrame extends JFrame  {
             @Override
             public void actionPerformed(ActionEvent e) {
                 contentPanel.removeAll();
-                contentPanel.add(toolPanel);
+                if (info.isSelected()) {
+                    contentPanel.add(toolPanel);
+                }
                 buildPuzzlePanel();
                 contentPanel.repaint();
                 stepsCounter.setText("0");
@@ -64,7 +61,10 @@ public class MainFrame extends JFrame  {
             public void actionPerformed(ActionEvent e) {
                 fileChooser.setSelectedFile(null);
                 if (fileChooser.showSaveDialog(saveGame) == JFileChooser.APPROVE_OPTION) {
-                    String name = fileChooser.getSelectedFile().getName() + ".puz";
+                    String name = fileChooser.getSelectedFile().getAbsolutePath();
+                    if (!name.endsWith(".puz")) {
+                        name += ".puz";
+                    }
                     serializer.save(puzzlePanel.getPuzzle(), name);
                 }
             }
@@ -75,7 +75,7 @@ public class MainFrame extends JFrame  {
             public void actionPerformed(ActionEvent e) {
                 fileChooser.setSelectedFile(null);
                 if (fileChooser.showOpenDialog(openGame) == JFileChooser.APPROVE_OPTION) {
-                    String name = fileChooser.getSelectedFile().getName();
+                    String name = fileChooser.getSelectedFile().getAbsolutePath();
                     FPPuzzle puzzle = serializer.open(name);
                     contentPanel.remove(puzzlePanel);
                     buildPuzzlePanel(puzzle);
@@ -84,32 +84,19 @@ public class MainFrame extends JFrame  {
 
         });
 
-        hideButton.addActionListener(new ActionListener() {
+        info.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (stuffOn) {
-                    contentPanel.remove(toolPanel);
-                    contentPanel.repaint();
-                    contentPanel.updateUI();
-                    stuffOn = false;
-                    stuff.setEnabled(true);
-                    hideButton.setEnabled(false);
-                }
-            }
-        });
-
-        stuff.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!stuffOn) {
+                if (info.isSelected()) {
                     contentPanel.removeAll();
                     contentPanel.add(toolPanel);
                     contentPanel.add(puzzlePanel);
                     contentPanel.repaint();
                     contentPanel.updateUI();
-                    stuffOn = true;
-                    stuff.setEnabled(false);
-                    hideButton.setEnabled(true);
+                } else {
+                    contentPanel.remove(toolPanel);
+                    contentPanel.repaint();
+                    contentPanel.updateUI();
                 }
             }
         });
@@ -138,21 +125,24 @@ public class MainFrame extends JFrame  {
         toolPanel = new JPanel(new GridLayout(1, 1));
 
         fileChooser = new JFileChooser();
-        menuBar = new JMenuBar();
-        menu = new JMenu("Menu");
+
+        JMenuBar menuBar = new JMenuBar();
+        JMenu menu = new JMenu("Menu");
         newGame = new JMenuItem("New Game");
         saveGame = new JMenuItem("Save");
         openGame = new JMenuItem("Open");
-        stuff = new JMenuItem("Return stuff");
-        hideButton = new JMenuItem("Hide stuff");
+
+        info = new JCheckBoxMenuItem("Stuff");
+
+        info.setEnabled(true);
+        info.setSelected(true);
 
         menu.add(newGame);
         menu.addSeparator();
         menu.add(openGame);
         menu.add(saveGame);
         menu.addSeparator();
-        menu.add(stuff);
-        menu.add(hideButton);
+        menu.add(info);
 
         menuBar.add(menu);
         this.setJMenuBar(menuBar);
@@ -179,13 +169,6 @@ public class MainFrame extends JFrame  {
         contentPanel.addComponentListener(puzzlePanel);
 
         puzzlePanel.setParent(this);
-        //hideButton = new JButton("Switch to full-size puzzle");
-        //toolPanel.add(hideButton);
-
-       // toolPanel.setPreferredSize(new Dimension(hideButton.getWidth(), newGameButton.getHeight()));
-        if (stuffOn) {
-            stuff.setEnabled(false);
-        }
 
         add(contentPanel);
     }
@@ -197,6 +180,4 @@ public class MainFrame extends JFrame  {
     public static void main(String[] args) {
         new MainFrame();
     }
-
-
 }
