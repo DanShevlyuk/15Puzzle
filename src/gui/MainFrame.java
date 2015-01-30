@@ -289,7 +289,6 @@ public class MainFrame extends JFrame implements WinEventListener {
     }
 
     public static void main(String[] args) {
-        System.out.println("Your OS: " + System.getProperty("os.name"));
         System.out.println("Open with " + args.length + " arguments");
         if (args.length == 1) {
             new MainFrame(args[0]);
