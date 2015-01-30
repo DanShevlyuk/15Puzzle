@@ -8,15 +8,13 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.File;
 
 /**
  * Main game window
  *
  */
-public class MainFrame extends JFrame  {
+public class MainFrame extends JFrame implements WinEventListener {
     protected JPanel contentPanel;
     protected FRPuzzlePanel puzzlePanel;
     protected JPanel toolPanel;
@@ -32,13 +30,20 @@ public class MainFrame extends JFrame  {
     private StopWatchUpdater stopWatchUpdater;
     private JLabel stopwatch;
 
+    private String path;
     private int panelSize = 4;
 
     public MainFrame() {
-        setTitle("I love this game.");
-        this.setIconImage(new ImageIcon("rsc/icon.png").getImage());
+        this("");
+    }
+    public MainFrame(String path) {
+        this.path = path;
+        setTitle("15Puzzle");
+        this.setIconImage(new ImageIcon("resources/icon.png").getImage());
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
         initComponents();
+
         setContentPane(contentPanel);
         Toolkit tk;
         tk = Toolkit.getDefaultToolkit();
@@ -56,16 +61,12 @@ public class MainFrame extends JFrame  {
         newGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                contentPanel.removeAll();
-                if (info.isSelected()) {
-                    contentPanel.add(toolPanel);
-                }
+
                 timer.stop();
                 stopWatchUpdater.drop();
-                buildPuzzlePanel();
-                contentPanel.repaint();
-                stepsCounter.setText("0");
+                startNewGame();
                 stopwatch.setText("00:00:00");
+                puzzlePanel.addWinListener(MainFrame.this);
             }
         });
 
@@ -75,14 +76,29 @@ public class MainFrame extends JFrame  {
                 fileChooser.setSelectedFile(null);
                 timer.stop();
                 if (fileChooser.showSaveDialog(saveGame) == JFileChooser.APPROVE_OPTION) {
-                    String name = fileChooser.getSelectedFile().getAbsolutePath();
+                    File file = fileChooser.getSelectedFile();
+
+                    if (file.exists()) {
+                        int result = JOptionPane.showConfirmDialog(fileChooser,
+                                "File already exists\n Rewrite file?", "File already exists",
+                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                        if (result == JOptionPane.NO_OPTION || result == JOptionPane.CLOSED_OPTION) {
+                            actionPerformed(e);
+                            return;
+                        }
+                    }
+
+                    String name = file.getAbsolutePath();
                     if (!name.endsWith(".puz")) {
                         name += ".puz";
                     }
-                    serializer.setTime(stopWatchUpdater.getTime());
+                    serializer = new Serializer(puzzlePanel.getPuzzle(),
+                            stopWatchUpdater.getTime());
                     Serializer.save(serializer, name);
                 }
-                timer.start();
+                if (!stopwatch.getText().equals("00:00:00")) {
+                    timer.start();
+                }
             }
         });
 
@@ -91,6 +107,7 @@ public class MainFrame extends JFrame  {
             public void actionPerformed(ActionEvent e) {
                 fileChooser.setSelectedFile(null);
                 timer.stop();
+
                 if (fileChooser.showOpenDialog(openGame) == JFileChooser.APPROVE_OPTION) {
                     String name = fileChooser.getSelectedFile().getAbsolutePath();
                     serializer = Serializer.open(name);
@@ -101,8 +118,9 @@ public class MainFrame extends JFrame  {
                     buildPuzzlePanel(puzzle);
                     stopwatch.setText(time);
                     stepsCounter.setText(String.valueOf(puzzlePanel.getPuzzle().getSteps()));
+
                 }
-                else {
+                else if (!stopwatch.getText().equals("00:00:00")) {
                     timer.start();
                 }
             }
@@ -131,6 +149,7 @@ public class MainFrame extends JFrame  {
         puzzlePanel.initComponents();
         puzzlePanel.makeCellViewsResizable();
         puzzlePanel.setParent(this);
+        puzzlePanel.addWinListener(MainFrame.this);
     }
 
     private void buildPuzzlePanel(FPPuzzle puzzle) {
@@ -154,7 +173,7 @@ public class MainFrame extends JFrame  {
         saveGame = new JMenuItem("Save");
         openGame = new JMenuItem("Open");
 
-        info = new JCheckBoxMenuItem("Stuff");
+        info = new JCheckBoxMenuItem("Additional info");
 
         info.setEnabled(true);
         info.setSelected(true);
@@ -173,6 +192,8 @@ public class MainFrame extends JFrame  {
         fileChooser.removeChoosableFileFilter(fileChooser.getFileFilter());
         fileChooser.setFileFilter(filter);
         fileChooser.setCurrentDirectory(new File(""));
+        fileChooser.setMultiSelectionEnabled(false);
+
         toolPanel.setPreferredSize(new Dimension(100, 100));
         toolPanel.setVisible(true);
 
@@ -188,17 +209,31 @@ public class MainFrame extends JFrame  {
         toolPanel.add(stepsCounter);
         toolPanel.add(stopwatch);
 
+        stopWatchUpdater = new StopWatchUpdater(stopwatch);
+        timer = new Timer(1000, stopWatchUpdater);
+
         puzzlePanel = new FRPuzzlePanel(panelSize);
+
+        if (path.equals("")) {
+            puzzlePanel.initComponents();
+        }
+        else {
+            serializer = Serializer.open(path);
+            puzzlePanel.initComponents(serializer.getPuzzle());
+            String time = serializer.getTime();
+            stopWatchUpdater.setTime(time);
+            stopwatch.setText(time);
+            stepsCounter.setText(String.valueOf(puzzlePanel.getPuzzle().getSteps()));
+        }
+
         contentPanel.add(toolPanel);
         contentPanel.add(puzzlePanel);
-        puzzlePanel.initComponents();
+
         contentPanel.addComponentListener(puzzlePanel);
         puzzlePanel.setParent(this);
 
-        stopWatchUpdater = new StopWatchUpdater(stopwatch);
-        timer = new Timer(1000, stopWatchUpdater);
-        serializer = new Serializer(puzzlePanel.getPuzzle());
-
+        puzzlePanel.addWinListener(this);
+        
         add(contentPanel);
     }
 
@@ -206,11 +241,85 @@ public class MainFrame extends JFrame  {
         this.stepsCounter.setText(text);
     }
 
+
+    public void startNewGame(){
+        contentPanel.removeAll();
+        if (info.isSelected()) {
+            contentPanel.add(toolPanel);
+        }
+        buildPuzzlePanel();
+        contentPanel.repaint();
+        stepsCounter.setText("0");
+    }
+
     public static void main(String[] args) {
-        new MainFrame();
+        System.out.println("Open with " + args.length + " arguments");
+        if (args.length == 1) {
+            new MainFrame(args[0]);
+        }
+        else {
+            new MainFrame();
+        }
     }
 
     public void runStopWatch() {
         timer.start();
+    }
+
+    public void stopStopWatch() {
+        timer.stop();
+    }
+
+    private class DialogWindow  extends JDialog{
+
+        JPanel buttonPanel;
+        JPanel contentPanel;
+
+        public DialogWindow(MainFrame owner) {
+            super(owner, "sexy winner bra", true);
+            contentPanel = new JPanel();
+            setContentPane(contentPanel);
+            buttonPanel = new JPanel();
+            JButton button1 = new JButton("New Game");
+            JButton button2 = new JButton("Exit");
+            JLabel label = new JLabel("Your Dick is Big! Wanna More?");
+
+            buttonPanel.add(button1);
+            buttonPanel.add(button2);
+            contentPanel.add(label, BorderLayout.CENTER);
+            contentPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+
+            button1.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    MainFrame parent = (MainFrame) owner;
+                    parent.startNewGame();
+                }
+            });
+
+            button2.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    setVisible(false);
+                    owner.dispose();
+                }
+            });
+
+            pack();
+
+            setVisible(false);
+
+        }
+
+    }
+
+
+    @Override
+    public void youWon() {
+        DialogWindow dialogWindow = new DialogWindow(this);
+        dialogWindow.setVisible(true);
+        ImageIcon icon = new ImageIcon();
+
     }
 }

@@ -8,19 +8,15 @@ import org.junit.Test;
 import java.io.File;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
-public class SerializerTest {
+public class SerializatorTest {
 
     private Serializer ser;
     private FPPuzzle puzzle;
-    private String time;
-
     @Before
     public void setUp() throws Exception {
+        ser = new Serializer();
         puzzle = new FPPuzzle();
-        time = "00:00:25";
-        ser = new Serializer(puzzle, time);
     }
 
     @After
@@ -31,7 +27,7 @@ public class SerializerTest {
 
     @Test
     public void testSave() throws Exception {
-        boolean res = Serializer.save(ser, "test.puz");
+        boolean res = ser.save(puzzle, "test.puz");
         assertEquals(true, res);
         File f = new File("test.puz");
         f.delete();
@@ -40,18 +36,14 @@ public class SerializerTest {
     @Test
     public void testOpen() throws Exception {
         save();
-        Serializer newSer = Serializer.open("test.puz");
-        assertNotNull(newSer);
-        FPPuzzle puzl = newSer.getPuzzle();
+        FPPuzzle puzl = ser.open("test.puz");
         assertEquals(puzl.getSize(), puzzle.getSize());
         for (int i  = 0; i < puzl.getSize(); i++) {
             assertEquals(puzl.get(i).compareTo(puzzle.get(i)), 0);
         }
-        assertEquals(time, ser.getTime());
     }
 
     private void save() {
-        Serializer.save(ser, "test.puz");
+        ser.save(puzzle, "test.puz");
     }
-
 }
