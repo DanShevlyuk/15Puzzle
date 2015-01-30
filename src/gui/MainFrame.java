@@ -254,4 +254,8 @@ public class MainFrame extends JFrame  {
     public void runStopWatch() {
         timer.start();
     }
+
+    public void stopStopWatch() {
+        timer.stop();
+    }
 }

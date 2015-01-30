@@ -148,6 +148,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
         for (FPCellView cell : cellViews) {
             cell.updateTheView();
         }
+        parent.stopStopWatch();
 
     }
 
@@ -163,7 +164,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
 
     @Override
     public void mouseExited(MouseEvent e) {
-        //Shutte
+        //Shutter
     }
 
     @Override
