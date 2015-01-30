@@ -1,6 +1,7 @@
 package gui;
 
-import com.apple.eawt.Application;
+//import com.apple.eawt.Application;
+
 import model.FPPuzzle;
 import serializer.Serializer;
 
@@ -52,9 +53,11 @@ public class MainFrame extends JFrame implements WinEventListener {
         // image for Windows ans Linux
         this.setIconImage(new ImageIcon("resources/icon.png").getImage());
 
+        /*
         // dock icon for Mac
-        Application.getApplication().setDockIconImage(new ImageIcon("resources/icon.png").getImage());
-
+        com.apple.eawt.Application.Application.getApplication().setDockIconImage(
+                new ImageIcon("resources/icon.png").getImage());
+        */
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         initComponents();
@@ -175,7 +178,7 @@ public class MainFrame extends JFrame implements WinEventListener {
         puzzlePanel.initComponents();
         puzzlePanel.makeCellViewsResizable();
         puzzlePanel.setParent(this);
-        puzzlePanel.addWinListener(MainFrame.this);
+        puzzlePanel.setWinListener(MainFrame.this);
     }
 
     private void buildPuzzlePanel(FPPuzzle puzzle) {
@@ -185,6 +188,7 @@ public class MainFrame extends JFrame implements WinEventListener {
         puzzlePanel.initComponents(puzzle);
         puzzlePanel.makeCellViewsResizable();
         puzzlePanel.setParent(this);
+        puzzlePanel.setWinListener(MainFrame.this);
     }
 
     private void initComponents() {
@@ -263,7 +267,7 @@ public class MainFrame extends JFrame implements WinEventListener {
         contentPanel.addComponentListener(puzzlePanel);
         puzzlePanel.setParent(this);
 
-        puzzlePanel.addWinListener(this);
+        puzzlePanel.setWinListener(this);
 
         add(contentPanel);
     }
@@ -280,12 +284,14 @@ public class MainFrame extends JFrame implements WinEventListener {
         }
         buildPuzzlePanel();
         contentPanel.repaint();
+        timer.stop();
         stepsCounter.setText("0");
         stopWatchUpdater.drop();
         stopwatch.setText("00:00:00");
     }
 
     public static void main(String[] args) {
+        System.out.println("Your OS: " + System.getProperty("os.name"));
         System.out.println("Open with " + args.length + " arguments");
         if (args.length == 1) {
             new MainFrame(args[0]);
@@ -314,16 +320,7 @@ public class MainFrame extends JFrame implements WinEventListener {
             } else {
                 panelSize = 10;
             }
-            contentPanel.removeAll();
-            if (info.isSelected()) {
-                contentPanel.add(toolPanel);
-            }
-            timer.stop();
-            stopWatchUpdater.drop();
-            buildPuzzlePanel();
-            contentPanel.repaint();
-            stepsCounter.setText("0");
-            stopwatch.setText("00:00:00");
+            startNewGame();
         }
     }
 

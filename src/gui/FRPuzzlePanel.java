@@ -18,16 +18,14 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
     private boolean runStopWatch;
 
 
-    private ArrayList<WinEventListener> listeners = new ArrayList<WinEventListener>();
+    private WinEventListener listener = null;
 
-    public void addWinListener(WinEventListener list) {
-        listeners.add(list);
+    public void setWinListener(WinEventListener list) {
+        listener = list;
     }
 
     public void notifyAboutWin() {
-        for (WinEventListener listener : listeners){
             listener.youWon();
-        }
     }
 
     public FRPuzzlePanel(int size) {
@@ -129,7 +127,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
         if (puzzle.moveMePlease(moveMe)){
             fillPaneSortedByPosition();
             if (puzzle.isComplete()){
-                fillWithCongratulations();
+                notifyAboutWin();
             }
         }
         updateUI();
@@ -142,6 +140,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
     }
 
 
+    /*
     public void fillWithCongratulations() {
         String str = "CONGRATULATIONS!";
 
@@ -164,7 +163,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
         parent.stopStopWatch();
 
     }
-
+    */
     @Override
     public void mouseReleased(MouseEvent e) {
         //Shutter
@@ -210,7 +209,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
 
     @Override
     public void keyPressed(KeyEvent e) {
-        int moveMe = -1;
+        int moveMe;
 
         System.out.println("Key pressed code=" + e.getKeyCode());
         System.out.println("empty >>> " + puzzle.getEmptyCellIndex());
@@ -248,13 +247,13 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
                 fillPaneSortedByPosition();
                 if (puzzle.isComplete()) {
                     notifyAboutWin();
-                    fillWithCongratulations();
                 }
             }
             updateUI();
             parent.setCountLabel("" + puzzle.getSteps());
             repaint();
         }
+
 
         updateUI();
         parent.setCountLabel("" + puzzle.getSteps());
@@ -263,6 +262,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
             runStopWatch = false;
         }
         repaint();
+
     }
 
     @Override
