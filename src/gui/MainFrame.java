@@ -51,23 +51,7 @@ public class MainFrame extends JFrame  {
         setPreferredSize(new Dimension(800, 500));
         pack();
 
-        this.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                puzzlePanel.keyTyped(e);
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-
-            }
-        });
-
+        this.addKeyListener(puzzlePanel);
 
         newGame.addActionListener(new ActionListener() {
             @Override

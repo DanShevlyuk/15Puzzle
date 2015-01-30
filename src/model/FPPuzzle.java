@@ -57,6 +57,7 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
             swap(index, whereToMove);
             complete = testComplete();
             stepsCounter++;
+            emptyCellIndex = index;
             return true;
         }
 
@@ -132,6 +133,38 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
 
     public FPCell get (int index) {
         return cells.get(index);
+    }
+
+    public int getLeftIndexFromEmpty() {
+        if (emptyCellIndex > 0) {
+            return emptyCellIndex - 1;
+        } else {
+            return -1;
+        }
+    }
+
+    public int getRightIndexFromEmpty() {
+        if (emptyCellIndex < puzzleSize - 1) {
+            return emptyCellIndex + 1;
+        } else {
+            return -1;
+        }
+    }
+
+    public int getUpFromEmpty() {
+        if (emptyCellIndex >= sideSize) {
+            return emptyCellIndex - sideSize;
+        } else {
+            return -1;
+        }
+    }
+
+    public int getDownFromEmpty() {
+        if (emptyCellIndex <= puzzleSize - sideSize - 1) {
+            return emptyCellIndex + sideSize;
+        } else {
+            return -1;
+        }
     }
 
     @Override

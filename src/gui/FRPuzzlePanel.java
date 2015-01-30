@@ -9,7 +9,7 @@ import java.awt.event.*;
 /**
  * Игровое поле с клетками
  */
-public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentListener {
+public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentListener, KeyListener {
     protected FPPuzzle puzzle;
     protected FPCellView cellViews[];
     private MainFrame parent;
@@ -25,6 +25,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
 
     public void setParent(MainFrame parent) {
         this.parent = parent;
+       // parent.addKeyListener(this);
     }
 
     public void fillPaneSortedByPosition(){
@@ -188,29 +189,46 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
         //Затычка
     }
 
+    @Override
     public void keyTyped(KeyEvent e) {
-        System.out.println("Key pressed code=" + e.getKeyCode() + ", char=" + e.getKeyChar());
 
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
         int moveMe = -1;
 
-        if (e.getKeyCode() == 37) {
-            moveMe = puzzle.getEmptyCellIndex() - 1;
-        } else if (e.getKeyCode() == 38) {
-            moveMe = puzzle.getEmptyCellIndex() - puzzle.getSize();
-        } else if (e.getKeyCode() == 39) {
-            moveMe = puzzle.getEmptyCellIndex() + 1;
-        } else if (e.getKeyCode() == 40) {
-            moveMe = puzzle.getEmptyCellIndex() + puzzle.getSize();
+        System.out.println("Key pressed code=" + e.getKeyCode());
+        System.out.println("empty >>> " + puzzle.getEmptyCellIndex());
+
+        int key = e.getKeyCode();
+        if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
+            moveMe = puzzle.getRightIndexFromEmpty();
+        } else if (key == KeyEvent.VK_UP || key == KeyEvent.VK_W) {
+            moveMe = puzzle.getDownFromEmpty();
+        } else if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
+            moveMe = puzzle.getLeftIndexFromEmpty();
+        } else if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) {
+            moveMe = puzzle.getUpFromEmpty();
         } else {
-            System.out.println("Dude!");
+            return;
         }
 
-        if (puzzle.moveMePlease(moveMe)){
-            fillPaneSortedByPosition();
-            if (puzzle.isComplete()){
-                fillWithCongratulations();
+        if (moveMe == -1) {
+            return;
+        } else {
+            System.out.println("move to >>> " + moveMe);
+            if (puzzle.moveMePlease(moveMe)) {
+                fillPaneSortedByPosition();
+                if (puzzle.isComplete()) {
+                    fillWithCongratulations();
+                }
             }
+            updateUI();
+            parent.setCountLabel("" + puzzle.getSteps());
+            repaint();
         }
+
         updateUI();
         parent.setCountLabel("" + puzzle.getSteps());
         if (runStopWatch) {
@@ -219,4 +237,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
         }
         repaint();
     }
+
+    @Override
+    public void keyReleased(KeyEvent e) {}
 }
