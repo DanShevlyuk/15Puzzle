@@ -28,6 +28,10 @@ public class MainFrame extends JFrame  {
     private JLabel stepsCounter;
     private Serializer serializer;
 
+    private Timer timer;
+    private StopWatchUpdater stopWatchUpdater;
+    private JLabel stopwatch;
+
     private int panelSize = 4;
 
     public MainFrame() {
@@ -72,9 +76,12 @@ public class MainFrame extends JFrame  {
                 if (info.isSelected()) {
                     contentPanel.add(toolPanel);
                 }
+                timer.stop();
+                stopWatchUpdater.drop();
                 buildPuzzlePanel();
                 contentPanel.repaint();
                 stepsCounter.setText("0");
+                stopwatch.setText("00:00:00");
             }
         });
 
@@ -82,13 +89,16 @@ public class MainFrame extends JFrame  {
             @Override
             public void actionPerformed(ActionEvent e) {
                 fileChooser.setSelectedFile(null);
+                timer.stop();
                 if (fileChooser.showSaveDialog(saveGame) == JFileChooser.APPROVE_OPTION) {
                     String name = fileChooser.getSelectedFile().getAbsolutePath();
                     if (!name.endsWith(".puz")) {
                         name += ".puz";
                     }
-                    serializer.save(puzzlePanel.getPuzzle(), name);
+                    serializer.setTime(stopWatchUpdater.getTime());
+                    Serializer.save(serializer, name);
                 }
+                timer.start();
             }
         });
 
@@ -96,14 +106,22 @@ public class MainFrame extends JFrame  {
             @Override
             public void actionPerformed(ActionEvent e) {
                 fileChooser.setSelectedFile(null);
+                timer.stop();
                 if (fileChooser.showOpenDialog(openGame) == JFileChooser.APPROVE_OPTION) {
                     String name = fileChooser.getSelectedFile().getAbsolutePath();
-                    FPPuzzle puzzle = serializer.open(name);
+                    serializer = Serializer.open(name);
+                    FPPuzzle puzzle = serializer.getPuzzle();
+                    String time = serializer.getTime();
+                    stopWatchUpdater.setTime(time);
                     contentPanel.remove(puzzlePanel);
                     buildPuzzlePanel(puzzle);
+                    stopwatch.setText(time);
+                    stepsCounter.setText(String.valueOf(puzzlePanel.getPuzzle().getSteps()));
+                }
+                else {
+                    timer.start();
                 }
             }
-
         });
 
         info.addActionListener(new ActionListener() {
@@ -142,7 +160,7 @@ public class MainFrame extends JFrame  {
 
     private void initComponents() {
         contentPanel = new JPanel(new GridLayout(1, 2));
-        toolPanel = new JPanel(new GridLayout(1, 1));
+        toolPanel = new JPanel(new GridLayout(2, 1));
 
         fileChooser = new JFileChooser();
 
@@ -168,7 +186,6 @@ public class MainFrame extends JFrame  {
         this.setJMenuBar(menuBar);
 
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Puzzle files", "puz");
-        serializer = new Serializer();
         fileChooser.removeChoosableFileFilter(fileChooser.getFileFilter());
         fileChooser.setFileFilter(filter);
         fileChooser.setCurrentDirectory(new File(""));
@@ -177,10 +194,15 @@ public class MainFrame extends JFrame  {
 
 
         stepsCounter = new JLabel("0");
-
         stepsCounter.setFont(new Font("Arial", Font.PLAIN, 72));
         stepsCounter.setHorizontalAlignment(SwingConstants.CENTER);
+
+        stopwatch = new JLabel("00:00:00");
+        stopwatch.setFont(new Font("Arial", Font.PLAIN, 72));
+        stopwatch.setHorizontalAlignment(SwingConstants.CENTER);
+
         toolPanel.add(stepsCounter);
+        toolPanel.add(stopwatch);
 
         puzzlePanel = new FRPuzzlePanel(panelSize);
         contentPanel.add(toolPanel);
@@ -188,6 +210,10 @@ public class MainFrame extends JFrame  {
         puzzlePanel.initComponents();
         contentPanel.addComponentListener(puzzlePanel);
         puzzlePanel.setParent(this);
+
+        stopWatchUpdater = new StopWatchUpdater(stopwatch);
+        timer = new Timer(1000, stopWatchUpdater);
+        serializer = new Serializer(puzzlePanel.getPuzzle());
 
         add(contentPanel);
     }
@@ -198,5 +224,9 @@ public class MainFrame extends JFrame  {
 
     public static void main(String[] args) {
         new MainFrame();
+    }
+
+    public void runStopWatch() {
+        timer.start();
     }
 }
