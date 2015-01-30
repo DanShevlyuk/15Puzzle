@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class FPPuzzleTest {
 
@@ -44,4 +46,15 @@ public class FPPuzzleTest {
         assertEquals(emptyIndex, puzzle.getEmptyCellIndex());
         assertEquals(emptyCount, 1);
     }
+
+//    @Test
+//    public void testCanSolve() {
+//        System.out.println("testCanSolve");
+//        puzzle = new FPPuzzle(4, true);
+//        assertTrue(puzzle.canSolve());
+//        puzzle.swap(puzzle.getSize() - 1, puzzle.getSize() - 2);
+//        assertFalse(puzzle.canSolve());
+//        puzzle.swap(puzzle.getSize() - 1, puzzle.getSize() - 2);
+//        assertTrue(puzzle.canSolve());
+//    }
 }

@@ -89,8 +89,23 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
             }
         }
 
+        System.out.println("Can solve >> " + (chaosCount % 2 == 0));
         return chaosCount % 2 == 0;
     }
+
+    private void shuffle() {
+        for (int i = 0; i < 200; i++) {
+            Set<Integer> directions = new HashSet<>();
+
+            directions.add(getLeftIndexFromEmpty());
+            directions.add(getDownFromEmpty());
+            directions.add(getRightIndexFromEmpty());
+            directions.add(getUpFromEmpty());
+
+
+        }
+    }
+
 
     public int getEmptyCellIndex() {
         return emptyCellIndex;

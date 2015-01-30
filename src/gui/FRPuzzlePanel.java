@@ -86,7 +86,6 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
         }
     }
 
-
     public void panelListenToCells() {
         for (FPCellView cellView : cellViews) {
             cellView.addMouseListener(this);
