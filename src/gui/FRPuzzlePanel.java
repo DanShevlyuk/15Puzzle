@@ -18,7 +18,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
     private boolean runStopWatch;
 
 
-    private ArrayList<WinEventListener> listeners = new ArrayList<WinEventListener>();
+    private ArrayList<WinEventListener> listeners = new ArrayList<>();
 
     public void addWinListener(WinEventListener list) {
         listeners.add(list);
@@ -253,6 +253,8 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
             updateUI();
             parent.setCountLabel("" + puzzle.getSteps());
             repaint();
+
+            //DRY??? WHTA FUCK IS THAT?
         }
 
         updateUI();
