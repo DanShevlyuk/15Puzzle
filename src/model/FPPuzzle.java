@@ -117,10 +117,6 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
         return puzzleSize;
     }
 
-    public int getSideSize() {
-        return sideSize;
-    }
-
     public int getSteps() {
         return stepsCounter;
     }

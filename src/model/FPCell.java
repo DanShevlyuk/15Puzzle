@@ -17,10 +17,6 @@ public class FPCell implements Comparable<FPCell>, Serializable {
         return value;
     }
 
-    public void setValue(int value) {
-        this.value = value;
-    }
-
     public boolean isEmpty() {
         return isEmpty;
     }
@@ -33,15 +29,8 @@ public class FPCell implements Comparable<FPCell>, Serializable {
         this.position = position;
     }
 
-    public void setEmpty(boolean isEmpty) {
-        this.isEmpty = isEmpty;
-    }
-
     @Override
     public int compareTo(FPCell o) {
         return this.getValue() < o.getValue() ? -1 : (this.getValue() == o.getValue() ? 0 : 1);
     }
-
-    // Mouse Events occurred in View
-
 }
