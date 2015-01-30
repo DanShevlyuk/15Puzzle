@@ -5,6 +5,7 @@ import model.FPPuzzle;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 /**
  * Игровое поле с клетками
@@ -15,6 +16,19 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
     private MainFrame parent;
     private final int panelSize;
     private boolean runStopWatch;
+
+
+    private ArrayList<WinEventListener> listeners = new ArrayList<WinEventListener>();
+
+    public void addWinListener(WinEventListener list) {
+        listeners.add(list);
+    }
+
+    public void notifyAboutWin() {
+        for (WinEventListener listener : listeners){
+            listener.youWon();
+        }
+    }
 
     public FRPuzzlePanel(int size) {
         panelSize = size;
@@ -85,7 +99,6 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
             addComponentListener(cellView);
         }
     }
-
 
     public void panelListenToCells() {
         for (FPCellView cellView : cellViews) {
@@ -234,6 +247,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
             if (puzzle.moveMePlease(moveMe)) {
                 fillPaneSortedByPosition();
                 if (puzzle.isComplete()) {
+                    notifyAboutWin();
                     fillWithCongratulations();
                 }
             }

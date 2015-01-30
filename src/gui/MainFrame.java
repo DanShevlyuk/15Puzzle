@@ -16,12 +16,11 @@ import java.io.File;
  * Main game window
  *
  */
-public class MainFrame extends JFrame  {
+public class MainFrame extends JFrame implements WinEventListener {
     protected JPanel contentPanel;
     protected FRPuzzlePanel puzzlePanel;
     protected JPanel toolPanel;
 
-    private JMenuItem newGame;
     private JMenuItem newGame4;
     private JMenuItem newGame6;
     private JMenuItem newGame8;
@@ -44,6 +43,7 @@ public class MainFrame extends JFrame  {
     public MainFrame() {
         this("");
     }
+
     public MainFrame(String path) {
         this.path = path;
         setTitle("15Puzzle");
@@ -111,6 +111,7 @@ public class MainFrame extends JFrame  {
             public void actionPerformed(ActionEvent e) {
                 fileChooser.setSelectedFile(null);
                 timer.stop();
+
                 if (fileChooser.showOpenDialog(openGame) == JFileChooser.APPROVE_OPTION) {
                     String name = fileChooser.getSelectedFile().getAbsolutePath();
                     serializer = Serializer.open(name);
@@ -123,8 +124,8 @@ public class MainFrame extends JFrame  {
 
                     stopwatch.setText(time);
                     stepsCounter.setText(String.valueOf(puzzlePanel.getPuzzle().getSteps()));
-                }
-                else if (!stopwatch.getText().equals("00:00:00")) {
+
+                } else if (!stopwatch.getText().equals("00:00:00")) {
                     timer.start();
                 }
             }
@@ -167,6 +168,7 @@ public class MainFrame extends JFrame  {
         puzzlePanel.initComponents();
         puzzlePanel.makeCellViewsResizable();
         puzzlePanel.setParent(this);
+        puzzlePanel.addWinListener(MainFrame.this);
     }
 
     private void buildPuzzlePanel(FPPuzzle puzzle) {
@@ -185,8 +187,9 @@ public class MainFrame extends JFrame  {
         fileChooser = new JFileChooser();
 
         JMenuBar menuBar = new JMenuBar();
+        JMenuItem newGame = new JMenu("New Game");
         JMenu menu = new JMenu("Menu");
-        newGame = new JMenu("New Game");
+
         newGame4 = new JMenuItem("4x4");
         newGame6 = new JMenuItem("6x6");
         newGame8 = new JMenuItem("8x8");
@@ -238,8 +241,7 @@ public class MainFrame extends JFrame  {
 
         if (path.equals("")) {
             puzzlePanel.initComponents();
-        }
-        else {
+        } else {
             serializer = Serializer.open(path);
             puzzlePanel.initComponents(serializer.getPuzzle());
             String time = serializer.getTime();
@@ -254,6 +256,8 @@ public class MainFrame extends JFrame  {
         contentPanel.addComponentListener(puzzlePanel);
         puzzlePanel.setParent(this);
 
+        puzzlePanel.addWinListener(this);
+
         add(contentPanel);
     }
 
@@ -262,12 +266,21 @@ public class MainFrame extends JFrame  {
     }
 
 
+    public void startNewGame() {
+        contentPanel.removeAll();
+        if (info.isSelected()) {
+            contentPanel.add(toolPanel);
+        }
+        buildPuzzlePanel();
+        contentPanel.repaint();
+        stepsCounter.setText("0");
+    }
+
     public static void main(String[] args) {
         System.out.println("Open with " + args.length + " arguments");
         if (args.length == 1) {
             new MainFrame(args[0]);
-        }
-        else {
+        } else {
             new MainFrame();
         }
     }
@@ -285,14 +298,11 @@ public class MainFrame extends JFrame  {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == newGame4) {
                 panelSize = 4;
-            }
-            else if (e.getSource() == newGame6) {
+            } else if (e.getSource() == newGame6) {
                 panelSize = 6;
-            }
-            else if (e.getSource() == newGame8) {
+            } else if (e.getSource() == newGame8) {
                 panelSize = 8;
-            }
-            else {
+            } else {
                 panelSize = 10;
             }
             contentPanel.removeAll();
@@ -306,5 +316,54 @@ public class MainFrame extends JFrame  {
             stepsCounter.setText("0");
             stopwatch.setText("00:00:00");
         }
+    }
+
+    private class DialogWindow extends JDialog {
+
+        private JPanel buttonPanel;
+        private JPanel contentPanel;
+
+        public DialogWindow(final MainFrame owner) {
+            super(owner, "sexy winner bra", true);
+            contentPanel = new JPanel();
+            setContentPane(contentPanel);
+            buttonPanel = new JPanel();
+            JButton button1 = new JButton("New Game");
+            JButton button2 = new JButton("Exit");
+            JLabel label = new JLabel("Your Dick is Big! Wanna More?");
+
+            buttonPanel.add(button1);
+            buttonPanel.add(button2);
+            contentPanel.add(label, BorderLayout.CENTER);
+            contentPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+
+            button1.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    MainFrame parent = owner;
+                    parent.startNewGame();
+                }
+            });
+
+            button2.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    setVisible(false);
+                    owner.dispose();
+                }
+            });
+
+            pack();
+
+            setVisible(false);
+        }
+    }
+
+    @Override
+    public void youWon() {
+        DialogWindow dialogWindow = new DialogWindow(this);
+        dialogWindow.setVisible(true);
+        ImageIcon icon = new ImageIcon();
     }
 }
