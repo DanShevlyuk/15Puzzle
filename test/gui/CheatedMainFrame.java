@@ -1,13 +1,10 @@
 package gui;
 
-/**
- * Created by reqwy on 29.01.2015.
- */
 public class CheatedMainFrame extends MainFrame {
 
     public CheatedMainFrame() {
         super();
-        puzzlePanel = new CheatedPuzzleView();
+        puzzlePanel = new CheatedPuzzleView(4);
         puzzlePanel.initComponents();
         contentPanel.removeAll();
         puzzlePanel.makeCellViewsResizable();

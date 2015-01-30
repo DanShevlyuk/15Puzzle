@@ -15,13 +15,12 @@ import java.awt.event.MouseListener;
 public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentListener {
     protected FPPuzzle puzzle;
     protected FPCellView cellViews[];
-
     private MainFrame parent;
-    private int stepsCounter;
-    //TODO: изменить 4 на puzzle.sideSize
-    private GridLayout layout = new GridLayout(4, 4);
+    private final int panelSize;
 
-    public FRPuzzlePanel() {
+    public FRPuzzlePanel(int size) {
+        panelSize = size;
+        GridLayout layout = new GridLayout(panelSize, panelSize);
         setLayout(layout);
     }
 
@@ -33,9 +32,9 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
         this.
         removeAll();
         sortCellsByPosition();
-        for (int i = 0; i < cellViews.length; i++) {
-            add(cellViews[i]);
-            cellViews[i].countTheSize();
+        for (FPCellView cellView : cellViews) {
+            add(cellView);
+            cellView.countTheSize();
         }
         repaint();
         validate();
@@ -44,8 +43,8 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension((int)(4 * cellViews[0].getPreferredSize().getWidth()),
-                (int)(4 * cellViews[0].getPreferredSize().getHeight()) + 2);
+        return new Dimension((int)(panelSize * cellViews[0].getPreferredSize().getWidth()),
+                (int)(panelSize * cellViews[0].getPreferredSize().getHeight()) + 2);
     }
 
     public void initComponents() {
@@ -64,8 +63,8 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
             cellViews[i] = new FPCellView(puzzle.get(i));
         }
 
-        for (int i = 0; i < cellViews.length; i++) {
-            add(cellViews[i]);
+        for (FPCellView cellView : cellViews) {
+            add(cellView);
         }
 
         panelListenToCells();
@@ -82,15 +81,15 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
     }
 
     public void makeCellViewsResizable() {
-        for (int i = 0; i < cellViews.length; i++) {
-            addComponentListener(cellViews[i]);
+        for (FPCellView cellView : cellViews) {
+            addComponentListener(cellView);
         }
     }
 
 
     public void panelListenToCells() {
-        for (int i = 0; i < cellViews.length; i++) {
-            cellViews[i].addMouseListener(this);
+        for (FPCellView cellView : cellViews) {
+            cellView.addMouseListener(this);
         }
     }
 
@@ -131,7 +130,8 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
 
         removeAll();
 
-        for (int i = 0; i < 16; i ++) {
+        int panel = panelSize * panelSize;
+        for (int i = 0; i < panel; i ++) {
             String letter = Character.toString(str.charAt(i));
             cellViews[i] = new CellWithAString(letter);
             add(cellViews[i]);

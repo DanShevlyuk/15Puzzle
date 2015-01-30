@@ -6,12 +6,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.geom.Rectangle2D;
 
 public class FPCellView extends JComponent implements ComponentListener {
-    FPCell model;
+    private FPCell model;
     protected int componentWidth = 50;
     protected int componentHeight = 50;
 
@@ -54,12 +52,14 @@ public class FPCellView extends JComponent implements ComponentListener {
         g2.draw(new Rectangle2D.Double(1, 1, componentWidth - 2, componentHeight - 2));
         int value = model.getValue();
         if (value == -1) {
-            Rectangle2D.Double rect = new Rectangle2D.Double(0, 0, componentWidth, componentHeight );
+            Rectangle2D.Double rect =
+                    new Rectangle2D.Double(0, 0, componentWidth, componentHeight );
             g2.setColor(Color.DARK_GRAY);
             g2.fill(rect);
         } else {
             if (model.getPosition() == (model.getValue()) - 1){
-                Rectangle2D.Double rect = new Rectangle2D.Double(1, 1, componentWidth-2, componentHeight-2);
+                Rectangle2D.Double rect =
+                        new Rectangle2D.Double(1, 1, componentWidth-2, componentHeight-2);
                 g2.setColor(Color.GREEN);
                 g2.fill(rect);
                 g2.setColor(Color.black);

@@ -26,6 +26,7 @@ public class MainFrame extends JFrame  {
     private JLabel stepsCounter;
     private Serializer serializer;
 
+    private int panelSize = 4;
 
     public MainFrame() {
         setTitle("I love this game.");
@@ -91,19 +92,17 @@ public class MainFrame extends JFrame  {
                     contentPanel.removeAll();
                     contentPanel.add(toolPanel);
                     contentPanel.add(puzzlePanel);
-                    contentPanel.repaint();
-                    contentPanel.updateUI();
                 } else {
                     contentPanel.remove(toolPanel);
-                    contentPanel.repaint();
-                    contentPanel.updateUI();
                 }
+                contentPanel.repaint();
+                contentPanel.updateUI();
             }
         });
     }
 
     private void buildPuzzlePanel(){
-        puzzlePanel = new FRPuzzlePanel();
+        puzzlePanel = new FRPuzzlePanel(panelSize);
         contentPanel.addComponentListener(puzzlePanel);
         contentPanel.add(puzzlePanel);
         puzzlePanel.initComponents();
@@ -112,7 +111,7 @@ public class MainFrame extends JFrame  {
     }
 
     private void buildPuzzlePanel(FPPuzzle puzzle) {
-        puzzlePanel = new FRPuzzlePanel();
+        puzzlePanel = new FRPuzzlePanel(panelSize);
         contentPanel.addComponentListener(puzzlePanel);
         contentPanel.add(puzzlePanel);
         puzzlePanel.initComponents(puzzle);
@@ -162,7 +161,7 @@ public class MainFrame extends JFrame  {
         stepsCounter.setHorizontalAlignment(SwingConstants.CENTER);
         toolPanel.add(stepsCounter);
 
-        puzzlePanel = new FRPuzzlePanel();
+        puzzlePanel = new FRPuzzlePanel(panelSize);
         contentPanel.add(toolPanel);
         contentPanel.add(puzzlePanel);
         puzzlePanel.initComponents();

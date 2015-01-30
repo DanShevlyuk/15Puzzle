@@ -1,6 +1,5 @@
 package model;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,11 +15,6 @@ public class FPPuzzleTest {
     @Before
     public void setUp() throws Exception {
         puzzle = new FPPuzzle();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-
     }
 
     @Test
