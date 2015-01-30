@@ -34,7 +34,7 @@ public class MainFrame extends JFrame  {
 
     public MainFrame() {
         setTitle("I love this game.");
-        this.setIconImage(new ImageIcon("rsc/icon.png").getImage());
+        this.setIconImage(new ImageIcon("resources/icon.png").getImage());
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         initComponents();
         setContentPane(contentPanel);
