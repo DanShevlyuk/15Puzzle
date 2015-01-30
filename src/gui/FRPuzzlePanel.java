@@ -20,7 +20,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
 
     private ArrayList<WinEventListener> listeners = new ArrayList<WinEventListener>();
 
-    public void setListener(WinEventListener list) {
+    public void addWinListener(WinEventListener list) {
         listeners.add(list);
     }
 

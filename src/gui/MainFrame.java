@@ -66,6 +66,7 @@ public class MainFrame extends JFrame implements WinEventListener {
                 stopWatchUpdater.drop();
                 startNewGame();
                 stopwatch.setText("00:00:00");
+                puzzlePanel.addWinListener(MainFrame.this);
             }
         });
 
@@ -106,6 +107,7 @@ public class MainFrame extends JFrame implements WinEventListener {
             public void actionPerformed(ActionEvent e) {
                 fileChooser.setSelectedFile(null);
                 timer.stop();
+
                 if (fileChooser.showOpenDialog(openGame) == JFileChooser.APPROVE_OPTION) {
                     String name = fileChooser.getSelectedFile().getAbsolutePath();
                     serializer = Serializer.open(name);
@@ -116,6 +118,7 @@ public class MainFrame extends JFrame implements WinEventListener {
                     buildPuzzlePanel(puzzle);
                     stopwatch.setText(time);
                     stepsCounter.setText(String.valueOf(puzzlePanel.getPuzzle().getSteps()));
+
                 }
                 else if (!stopwatch.getText().equals("00:00:00")) {
                     timer.start();
@@ -146,6 +149,7 @@ public class MainFrame extends JFrame implements WinEventListener {
         puzzlePanel.initComponents();
         puzzlePanel.makeCellViewsResizable();
         puzzlePanel.setParent(this);
+        puzzlePanel.addWinListener(MainFrame.this);
     }
 
     private void buildPuzzlePanel(FPPuzzle puzzle) {
@@ -228,6 +232,8 @@ public class MainFrame extends JFrame implements WinEventListener {
         contentPanel.addComponentListener(puzzlePanel);
         puzzlePanel.setParent(this);
 
+        puzzlePanel.addWinListener(this);
+        
         add(contentPanel);
     }
 
