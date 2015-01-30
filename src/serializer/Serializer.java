@@ -7,10 +7,11 @@ import java.io.*;
 public class Serializer implements Serializable {
 
     private FPPuzzle puzzle;
-    private String time = "";
+    private String time;
 
-    public Serializer(FPPuzzle puzzle) {
+    public Serializer(FPPuzzle puzzle, String time) {
         this.puzzle = puzzle;
+        this.time = time;
     }
 
     public static boolean save(Serializer serialize, String name) {
@@ -46,9 +47,5 @@ public class Serializer implements Serializable {
 
     public String getTime() {
         return time;
-    }
-
-    public void setTime(String time) {
-       this.time = time;
     }
 }

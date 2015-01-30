@@ -8,8 +8,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.File;
 
 /**
@@ -79,7 +77,7 @@ public class MainFrame extends JFrame  {
                     if (!name.endsWith(".puz")) {
                         name += ".puz";
                     }
-                    serializer.setTime(stopWatchUpdater.getTime());
+                    serializer = new Serializer(puzzlePanel.getPuzzle(), stopWatchUpdater.getTime());
                     Serializer.save(serializer, name);
                 }
                 timer.start();
@@ -197,7 +195,6 @@ public class MainFrame extends JFrame  {
 
         stopWatchUpdater = new StopWatchUpdater(stopwatch);
         timer = new Timer(1000, stopWatchUpdater);
-        serializer = new Serializer(puzzlePanel.getPuzzle());
 
         add(contentPanel);
     }

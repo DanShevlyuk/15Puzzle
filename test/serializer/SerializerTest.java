@@ -20,8 +20,7 @@ public class SerializerTest {
     public void setUp() throws Exception {
         puzzle = new FPPuzzle();
         time = "00:00:25";
-        ser = new Serializer(puzzle);
-        ser.setTime(time);
+        ser = new Serializer(puzzle, time);
     }
 
     @After
