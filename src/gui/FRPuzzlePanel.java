@@ -190,23 +190,22 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() < KeyEvent.VK_LEFT || e.getKeyCode() > KeyEvent.VK_DOWN) {
-            return;
-        }
-
-        System.out.println("Key pressed code=" + e.getKeyCode());
-
         int moveMe = -1;
 
+        System.out.println("Key pressed code=" + e.getKeyCode());
         System.out.println("empty >>> " + puzzle.getEmptyCellIndex());
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+
+        int key = e.getKeyCode();
+        if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
             moveMe = puzzle.getRightIndexFromEmpty();
-        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+        } else if (key == KeyEvent.VK_UP || key == KeyEvent.VK_W) {
             moveMe = puzzle.getDownFromEmpty();
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+        } else if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
             moveMe = puzzle.getLeftIndexFromEmpty();
-        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+        } else if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) {
             moveMe = puzzle.getUpFromEmpty();
+        } else {
+            return;
         }
 
         if (moveMe == -1) {
