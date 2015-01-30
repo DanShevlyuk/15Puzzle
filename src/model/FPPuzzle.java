@@ -182,6 +182,10 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
         }
     }
 
+    public int getSideSize() {
+        return sideSize;
+    }
+
     @Override
     public Iterator<FPCell> iterator() {
         return cells.iterator();

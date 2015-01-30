@@ -25,25 +25,25 @@ public class SerializatorTest {
         f.delete();
     }
 
-//    @Test
-//    public void testSave() throws Exception {
-//        boolean res = ser.save(puzzle, "test.puz");
-//        assertEquals(true, res);
-//        File f = new File("test.puz");
-//        f.delete();
-//    }
-//
-//    @Test
-//    public void testOpen() throws Exception {
-//        save();
-//        FPPuzzle puzl = ser.open("test.puz");
-//        assertEquals(puzl.getSize(), puzzle.getSize());
-//        for (int i  = 0; i < puzl.getSize(); i++) {
-//            assertEquals(puzl.get(i).compareTo(puzzle.get(i)), 0);
-//        }
-//    }
-//
-//    private void save() {
-//        ser.save(puzzle, "test.puz");
-//    }
+    @Test
+    public void testSave() throws Exception {
+        boolean res = ser.save(puzzle, "test.puz");
+        assertEquals(true, res);
+        File f = new File("test.puz");
+        f.delete();
+    }
+
+    @Test
+    public void testOpen() throws Exception {
+        save();
+        FPPuzzle puzl = ser.open("test.puz");
+        assertEquals(puzl.getSize(), puzzle.getSize());
+        for (int i  = 0; i < puzl.getSize(); i++) {
+            assertEquals(puzl.get(i).compareTo(puzzle.get(i)), 0);
+        }
+    }
+
+    private void save() {
+        ser.save(puzzle, "test.puz");
+    }
 }

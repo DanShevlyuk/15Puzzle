@@ -9,6 +9,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.File;
 
 /**
@@ -19,7 +21,12 @@ public class MainFrame extends JFrame implements WinEventListener {
     protected JPanel contentPanel;
     protected FRPuzzlePanel puzzlePanel;
     protected JPanel toolPanel;
-    private JMenuItem newGame;
+
+    private JMenuItem newGame4;
+    private JMenuItem newGame6;
+    private JMenuItem newGame8;
+    private JMenuItem newGame10;
+
     private JMenuItem saveGame;
     private JMenuItem openGame;
     private JMenuItem info;
@@ -37,6 +44,7 @@ public class MainFrame extends JFrame implements WinEventListener {
     public MainFrame() {
         this("");
     }
+
     public MainFrame(String path) {
         this.path = path;
         setTitle("15Puzzle");
@@ -60,22 +68,17 @@ public class MainFrame extends JFrame implements WinEventListener {
         setVisible(true);
         puzzlePanel.makeCellViewsResizable();
 
+        setMinimumSize(new Dimension(670, 440));
         setPreferredSize(new Dimension(800, 500));
+
         pack();
 
         this.addKeyListener(puzzlePanel);
 
-        newGame.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                timer.stop();
-                stopWatchUpdater.drop();
-                startNewGame();
-                stopwatch.setText("00:00:00");
-                puzzlePanel.addWinListener(MainFrame.this);
-            }
-        });
+        newGame4.addActionListener(new NewGameListener());
+        newGame6.addActionListener(new NewGameListener());
+        newGame8.addActionListener(new NewGameListener());
+        newGame10.addActionListener(new NewGameListener());
 
         saveGame.addActionListener(new ActionListener() {
             @Override
@@ -89,7 +92,8 @@ public class MainFrame extends JFrame implements WinEventListener {
                         int result = JOptionPane.showConfirmDialog(fileChooser,
                                 "File already exists\n Rewrite file?", "File already exists",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                        if (result == JOptionPane.NO_OPTION || result == JOptionPane.CLOSED_OPTION) {
+                        if (result == JOptionPane.NO_OPTION ||
+                                result == JOptionPane.CLOSED_OPTION) {
                             actionPerformed(e);
                             return;
                         }
@@ -122,12 +126,13 @@ public class MainFrame extends JFrame implements WinEventListener {
                     String time = serializer.getTime();
                     stopWatchUpdater.setTime(time);
                     contentPanel.remove(puzzlePanel);
+                    panelSize = puzzle.getSideSize();
                     buildPuzzlePanel(puzzle);
+
                     stopwatch.setText(time);
                     stepsCounter.setText(String.valueOf(puzzlePanel.getPuzzle().getSteps()));
 
-                }
-                else if (!stopwatch.getText().equals("00:00:00")) {
+                } else if (!stopwatch.getText().equals("00:00:00")) {
                     timer.start();
                 }
             }
@@ -147,9 +152,23 @@ public class MainFrame extends JFrame implements WinEventListener {
                 contentPanel.updateUI();
             }
         });
+
+        //тут должен меняться размер лэйблов
+        //но меняется он хуево
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                stepsCounter.setFont(new Font("Arial", Font.PLAIN,
+                        2 * (getHeight() / 100) * (getWidth() / 100)));
+
+                stopwatch.setFont(new Font("Arial", Font.PLAIN,
+                        3 * (toolPanel.getHeight() / 100) * (toolPanel.getWidth() / 100)));
+            }
+        });
     }
 
-    private void buildPuzzlePanel(){
+    private void buildPuzzlePanel() {
         puzzlePanel = new FRPuzzlePanel(panelSize);
         contentPanel.addComponentListener(puzzlePanel);
         contentPanel.add(puzzlePanel);
@@ -175,16 +194,25 @@ public class MainFrame extends JFrame implements WinEventListener {
         fileChooser = new JFileChooser();
 
         JMenuBar menuBar = new JMenuBar();
+        JMenuItem newGame = new JMenu("New Game");
         JMenu menu = new JMenu("Menu");
-        newGame = new JMenuItem("New Game");
+
+        newGame4 = new JMenuItem("4x4");
+        newGame6 = new JMenuItem("6x6");
+        newGame8 = new JMenuItem("8x8");
+        newGame10 = new JMenuItem("10x10");
+
         saveGame = new JMenuItem("Save");
         openGame = new JMenuItem("Open");
-
         info = new JCheckBoxMenuItem("Additional info");
 
         info.setEnabled(true);
         info.setSelected(true);
 
+        newGame.add(newGame4);
+        newGame.add(newGame6);
+        newGame.add(newGame8);
+        newGame.add(newGame10);
         menu.add(newGame);
         menu.addSeparator();
         menu.add(openGame);
@@ -204,13 +232,10 @@ public class MainFrame extends JFrame implements WinEventListener {
         toolPanel.setPreferredSize(new Dimension(100, 100));
         toolPanel.setVisible(true);
 
-
         stepsCounter = new JLabel("0");
-        stepsCounter.setFont(new Font("Arial", Font.PLAIN, 72));
         stepsCounter.setHorizontalAlignment(SwingConstants.CENTER);
 
         stopwatch = new JLabel("00:00:00");
-        stopwatch.setFont(new Font("Arial", Font.PLAIN, 72));
         stopwatch.setHorizontalAlignment(SwingConstants.CENTER);
 
         toolPanel.add(stepsCounter);
@@ -223,8 +248,7 @@ public class MainFrame extends JFrame implements WinEventListener {
 
         if (path.equals("")) {
             puzzlePanel.initComponents();
-        }
-        else {
+        } else {
             serializer = Serializer.open(path);
             puzzlePanel.initComponents(serializer.getPuzzle());
             String time = serializer.getTime();
@@ -240,7 +264,7 @@ public class MainFrame extends JFrame implements WinEventListener {
         puzzlePanel.setParent(this);
 
         puzzlePanel.addWinListener(this);
-        
+
         add(contentPanel);
     }
 
@@ -249,7 +273,7 @@ public class MainFrame extends JFrame implements WinEventListener {
     }
 
 
-    public void startNewGame(){
+    public void startNewGame() {
         contentPanel.removeAll();
         if (info.isSelected()) {
             contentPanel.add(toolPanel);
@@ -263,8 +287,7 @@ public class MainFrame extends JFrame implements WinEventListener {
         System.out.println("Open with " + args.length + " arguments");
         if (args.length == 1) {
             new MainFrame(args[0]);
-        }
-        else {
+        } else {
             new MainFrame();
         }
     }
@@ -277,12 +300,37 @@ public class MainFrame extends JFrame implements WinEventListener {
         timer.stop();
     }
 
-    private class DialogWindow  extends JDialog{
+    class NewGameListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == newGame4) {
+                panelSize = 4;
+            } else if (e.getSource() == newGame6) {
+                panelSize = 6;
+            } else if (e.getSource() == newGame8) {
+                panelSize = 8;
+            } else {
+                panelSize = 10;
+            }
+            contentPanel.removeAll();
+            if (info.isSelected()) {
+                contentPanel.add(toolPanel);
+            }
+            timer.stop();
+            stopWatchUpdater.drop();
+            buildPuzzlePanel();
+            contentPanel.repaint();
+            stepsCounter.setText("0");
+            stopwatch.setText("00:00:00");
+        }
+    }
 
-        JPanel buttonPanel;
-        JPanel contentPanel;
+    private class DialogWindow extends JDialog {
 
-        public DialogWindow(MainFrame owner) {
+        private JPanel buttonPanel;
+        private JPanel contentPanel;
+
+        public DialogWindow(final MainFrame owner) {
             super(owner, "sexy winner bra", true);
             contentPanel = new JPanel();
             setContentPane(contentPanel);
@@ -300,7 +348,7 @@ public class MainFrame extends JFrame implements WinEventListener {
             button1.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    MainFrame parent = (MainFrame) owner;
+                    MainFrame parent = owner;
                     parent.startNewGame();
                 }
             });
@@ -316,17 +364,13 @@ public class MainFrame extends JFrame implements WinEventListener {
             pack();
 
             setVisible(false);
-
         }
-
     }
-
 
     @Override
     public void youWon() {
         DialogWindow dialogWindow = new DialogWindow(this);
         dialogWindow.setVisible(true);
         ImageIcon icon = new ImageIcon();
-
     }
 }
