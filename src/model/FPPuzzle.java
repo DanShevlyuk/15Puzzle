@@ -21,27 +21,52 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
     public FPPuzzle(int sideSize) {
         this.sideSize = sideSize;
         puzzleSize = sideSize * sideSize;
-        do {
-            cells = new ArrayList<>();
-            Set<Integer> usedNumbers = new HashSet<>();
-            cells.add(new FPCell(-1, 0));
+        cells = new ArrayList<>();
 
-            int i = 1;
-            while (i < puzzleSize) {
-                int next = RANDOM.nextInt(puzzleSize - 1) + 1;
+        // Just fill puzzle with numbers 1,2,3,4,5 ..
+        for (int i = 0; i < puzzleSize - 1; i++) {
+            cells.add(new FPCell(i + 1, i));
+        }
 
-                if (usedNumbers.add(next)) {
-                    cells.add(new FPCell(next, i));
-                    i++;
+        cells.add(new FPCell(-1, puzzleSize - 1)); // add empty cell
+        emptyCellIndex = puzzleSize - 1;
+
+        puzzleShuffle();
+        complete = testComplete();
+
+        stepsCounter = 0;
+    }
+
+    private void puzzleShuffle() {
+        // make 50*4 = 200 random steps for 4x4
+        // 300 for 6x6
+        // 400 for 8x8
+        // and 500 for 10x10
+        for (int i = 0; i < 50 * puzzleSize; i++) {
+            ArrayList<Integer> directions = new ArrayList<>();
+            ArrayList<Integer> resultDir = new ArrayList<>();
+
+            directions.add(getLeftIndexFromEmpty());
+            directions.add(getDownFromEmpty());
+            directions.add(getRightIndexFromEmpty());
+            directions.add(getUpFromEmpty());
+
+            for (int k = 0; k < directions.size(); k++) {
+                if (directions.get(k) != -1) {
+                    resultDir.add(directions.get(k));
                 }
             }
 
-            stepsCounter = 0;
-            emptyCellIndex = RANDOM.nextInt(puzzleSize);
-            swap(emptyCellIndex, 0);
-            complete = testComplete();
-        } while (complete || !canSolve());
+            //get random index from array
+            int whichToMove = RANDOM.nextInt(resultDir.size());
+
+            System.out.println("whichToMove  >> " + whichToMove);
+            System.out.println("directions.get(whichToMove)  >> " + resultDir.get(whichToMove));
+
+            moveMePlease(resultDir.get(whichToMove));
+        }
     }
+
 
     /*
      *  Вызывается после того, как FPPuzzlePanel обработал нажатие
@@ -64,53 +89,6 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
         return false;
     }
 
-    private void swap(int pos1, int pos2) {
-        FPCell cell1 = cells.get(pos1);
-        FPCell cell2 = cells.get(pos2);
-        int cell1pos = cell1.getPosition();
-        cell1.setPosition(cell2.getPosition());
-        cell2.setPosition(cell1pos);
-        cells.set(pos1, cell2);
-        cells.set(pos2, cell1);
-    }
-
-    private boolean canSolve() {
-        int chaosCount = 0;
-        for (int i = 0; i < puzzleSize - 1; i++) {
-            FPCell cell = cells.get(i);
-            if (i == emptyCellIndex) {
-                continue;
-            }
-
-            for (int j = i + 1; j < puzzleSize; j++) {
-                if (j != emptyCellIndex && cell.compareTo(cells.get(j)) > 0) {
-                    chaosCount++;
-                }
-            }
-        }
-
-        System.out.println("Can solve >> " + (chaosCount % 2 == 0));
-        return chaosCount % 2 == 0;
-    }
-
-    private void shuffle() {
-        for (int i = 0; i < 200; i++) {
-            Set<Integer> directions = new HashSet<>();
-
-            directions.add(getLeftIndexFromEmpty());
-            directions.add(getDownFromEmpty());
-            directions.add(getRightIndexFromEmpty());
-            directions.add(getUpFromEmpty());
-
-
-        }
-    }
-
-
-    public int getEmptyCellIndex() {
-        return emptyCellIndex;
-    }
-
     private int moveTo(int i) {
         if ((i % sideSize != 0) && cells.get(i - 1).isEmpty()) {
             return i - 1;
@@ -129,12 +107,36 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
         }
     }
 
+    private void swap(int pos1, int pos2) {
+        FPCell cell1 = cells.get(pos1);
+        FPCell cell2 = cells.get(pos2);
+        int cell1pos = cell1.getPosition();
+        cell1.setPosition(cell2.getPosition());
+        cell2.setPosition(cell1pos);
+        cells.set(pos1, cell2);
+        cells.set(pos2, cell1);
+    }
+
+    //region Getters
+    public int getEmptyCellIndex() {
+        return emptyCellIndex;
+    }
+
     public int getSize() {
         return puzzleSize;
     }
 
     public int getSteps() {
         return stepsCounter;
+    }
+
+    public int getSideSize() {
+        return sideSize;
+    }
+    //endregion
+
+    public FPCell get (int index) {
+        return cells.get(index);
     }
 
     private boolean testComplete() {
@@ -146,10 +148,8 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
         return true;
     }
 
-    public FPCell get (int index) {
-        return cells.get(index);
-    }
 
+    //region Methods to get cells around the empty cell
     public int getLeftIndexFromEmpty() {
         if (emptyCellIndex > 0) {
             return emptyCellIndex - 1;
@@ -181,10 +181,7 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
             return -1;
         }
     }
-
-    public int getSideSize() {
-        return sideSize;
-    }
+    //endregion
 
     @Override
     public Iterator<FPCell> iterator() {
