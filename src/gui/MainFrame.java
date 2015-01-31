@@ -6,10 +6,7 @@ import serializer.Serializer;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 import java.io.File;
 
 /**
@@ -320,17 +317,17 @@ public class MainFrame extends JFrame implements WinEventListener {
             contentPanel = new JPanel();
             setContentPane(contentPanel);
             buttonPanel = new JPanel();
-            JButton button1 = new JButton("New Game");
-            JButton button2 = new JButton("Exit");
+            JButton newGameButton = new JButton("New Game");
+            JButton exitButton = new JButton("Exit");
             JLabel label = new JLabel("Your Dick is Big! Wanna More?");
 
-            buttonPanel.add(button1);
-            buttonPanel.add(button2);
+            buttonPanel.add(newGameButton);
+            buttonPanel.add(exitButton);
             contentPanel.add(label, BorderLayout.CENTER);
             contentPanel.add(buttonPanel, BorderLayout.SOUTH);
 
 
-            button1.addActionListener(new ActionListener() {
+            newGameButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     setVisible(false);
@@ -338,11 +335,12 @@ public class MainFrame extends JFrame implements WinEventListener {
                 }
             });
 
-            button2.addActionListener(new ActionListener() {
+            exitButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     setVisible(false);
                     owner.dispose();
+                    owner.dispatchEvent(new WindowEvent(owner, WindowEvent.WINDOW_CLOSING));
                 }
             });
 
