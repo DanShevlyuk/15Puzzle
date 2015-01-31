@@ -319,7 +319,7 @@ public class MainFrame extends JFrame implements WinEventListener {
             buttonPanel = new JPanel();
             JButton newGameButton = new JButton("New Game");
             JButton exitButton = new JButton("Exit");
-            JLabel label = new JLabel("Your Dick is Big! Wanna More?");
+            JLabel label = new JLabel("You are awesome! Wanna play more?");
 
             buttonPanel.add(newGameButton);
             buttonPanel.add(exitButton);
