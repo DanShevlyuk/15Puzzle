@@ -126,12 +126,10 @@ public class MainFrame extends JFrame implements WinEventListener {
                     stopWatchUpdater.setTime(time);
                     contentPanel.remove(puzzlePanel);
                     panelSize = puzzle.getSideSize();
-                    buildPuzzlePanel(puzzle);
-
                     stopwatch.setText(time);
+                    buildPuzzlePanel(puzzle);
                     stepsCounter.setText(String.valueOf(puzzlePanel.getPuzzle().getSteps()));
-
-                } else if (!stopwatch.getText().equals("00:00:00")) {
+                } else if (!stepsCounter.getText().equals("0")) {
                     timer.start();
                 }
             }
@@ -167,22 +165,16 @@ public class MainFrame extends JFrame implements WinEventListener {
         });
     }
 
-    private void buildPuzzlePanel() {
-        puzzlePanel = new FRPuzzlePanel(panelSize);
-        contentPanel.addComponentListener(puzzlePanel);
-        contentPanel.add(puzzlePanel);
-        puzzlePanel.initComponents();
-        puzzlePanel.makeCellViewsResizable();
-        puzzlePanel.setParent(this);
-        puzzlePanel.setWinListener(MainFrame.this);
-        this.addKeyListener(puzzlePanel);
-    }
-
     private void buildPuzzlePanel(FPPuzzle puzzle) {
         puzzlePanel = new FRPuzzlePanel(panelSize);
         contentPanel.addComponentListener(puzzlePanel);
         contentPanel.add(puzzlePanel);
-        puzzlePanel.initComponents(puzzle);
+        if (puzzle == null) {
+            puzzlePanel.initComponents();
+        }
+        else {
+            puzzlePanel.initComponents(puzzle);
+        }
         puzzlePanel.makeCellViewsResizable();
         puzzlePanel.setParent(this);
         puzzlePanel.setWinListener(MainFrame.this);
@@ -276,16 +268,16 @@ public class MainFrame extends JFrame implements WinEventListener {
 
 
     public void startNewGame() {
+        timer.stop();
+        stopWatchUpdater.drop();
         contentPanel.removeAll();
         if (info.isSelected()) {
             contentPanel.add(toolPanel);
         }
-        buildPuzzlePanel();
-        contentPanel.repaint();
-        timer.stop();
+        buildPuzzlePanel(null);
         stepsCounter.setText("0");
-        stopWatchUpdater.drop();
         stopwatch.setText("00:00:00");
+        contentPanel.repaint();
     }
 
     public static void main(String[] args) {
@@ -299,10 +291,6 @@ public class MainFrame extends JFrame implements WinEventListener {
 
     public void runStopWatch() {
         timer.start();
-    }
-
-    public void stopStopWatch() {
-        timer.stop();
     }
 
     class NewGameListener implements ActionListener {
@@ -327,7 +315,8 @@ public class MainFrame extends JFrame implements WinEventListener {
         private JPanel contentPanel;
 
         public DialogWindow(final MainFrame owner) {
-            super(owner, "sexy winner bra", true);
+            super(owner, "Congratulations", true);
+
             contentPanel = new JPanel();
             setContentPane(contentPanel);
             buttonPanel = new JPanel();
@@ -344,8 +333,8 @@ public class MainFrame extends JFrame implements WinEventListener {
             button1.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    MainFrame parent = owner;
-                    parent.startNewGame();
+                    setVisible(false);
+                    owner.startNewGame();
                 }
             });
 
@@ -365,9 +354,14 @@ public class MainFrame extends JFrame implements WinEventListener {
 
     @Override
     public void youWon() {
-        timer.stop();
         DialogWindow dialogWindow = new DialogWindow(this);
+        Toolkit tk;
+        tk = Toolkit.getDefaultToolkit();
+        Dimension screen = tk.getScreenSize();
+        dialogWindow.setLocation(((int) screen.getWidth() / 4) + (this.getWidth() / 4),
+                ((int) screen.getHeight() / 4) + (this.getHeight() / 4));
+        dialogWindow.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         dialogWindow.setVisible(true);
-        ImageIcon icon = new ImageIcon();
+        //ImageIcon icon = new ImageIcon();
     }
 }

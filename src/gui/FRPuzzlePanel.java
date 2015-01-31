@@ -111,32 +111,6 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
         makeCellViewsResizable();
     }
 
-
-    /*
-    public void fillWithCongratulations() {
-        String str = "CONGRATULATIONS!";
-
-        removeAll();
-
-        int panel = panelSize * panelSize;
-        for (int i = 0; i < panel; i ++) {
-            String letter = Character.toString(str.charAt(i));
-            cellViews[i] = new CellWithAString(letter);
-            add(cellViews[i]);
-            cellViews[i].countTheSize();
-        }
-        makeCellViewsResizable();
-        repaint();
-        validate();
-        updateUI();
-        for (FPCellView cell : cellViews) {
-            cell.updateTheView();
-        }
-        parent.stopStopWatch();
-
-    }
-    */
-
     //region MouseListener methods
     @Override
     public void mouseClicked(MouseEvent e) {
