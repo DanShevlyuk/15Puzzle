@@ -5,12 +5,12 @@ import java.io.Serializable;
 public class FPCell implements Comparable<FPCell>, Serializable {
     private int value;
     private boolean isEmpty;
-    private int position;
+    private int position; // position in puzzle array
 
     public FPCell(int value, int pos) {
         this.value = value;
         position = pos;
-        isEmpty = (value == -1);
+        isEmpty = (value == -1); // -1 means empty cell
     }
 
     public int getValue() {
