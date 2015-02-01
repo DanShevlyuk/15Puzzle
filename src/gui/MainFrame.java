@@ -6,7 +6,6 @@ import serializer.Serializer;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.io.File;
 
@@ -16,7 +15,7 @@ import java.io.File;
  */
 public class MainFrame extends JFrame implements WinEventListener {
     protected JPanel contentPanel;
-    protected FRPuzzlePanel puzzlePanel;
+    protected FPPuzzlePanel puzzlePanel;
     protected JPanel toolPanel;
 
     private JMenuItem newGame4;
@@ -164,7 +163,7 @@ public class MainFrame extends JFrame implements WinEventListener {
     }
 
     private void buildPuzzlePanel(FPPuzzle puzzle) {
-        puzzlePanel = new FRPuzzlePanel(panelSize);
+        puzzlePanel = new FPPuzzlePanel(panelSize);
         contentPanel.addComponentListener(puzzlePanel);
         contentPanel.add(puzzlePanel);
         if (puzzle == null) {
@@ -236,7 +235,7 @@ public class MainFrame extends JFrame implements WinEventListener {
         stopWatchUpdater = new StopWatchUpdater(stopwatch);
         timer = new Timer(1000, stopWatchUpdater);
 
-        puzzlePanel = new FRPuzzlePanel(panelSize);
+        puzzlePanel = new FPPuzzlePanel(panelSize);
 
         if (path.equals("")) {
             puzzlePanel.initComponents();

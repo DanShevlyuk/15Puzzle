@@ -1,6 +1,6 @@
 package gui;
 
-public class CheatedPuzzleView extends FRPuzzlePanel {
+public class CheatedPuzzleView extends FPPuzzlePanel {
 
     public CheatedPuzzleView(int size) {
         super(size);

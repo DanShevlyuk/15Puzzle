@@ -21,7 +21,7 @@ public class FPCellView extends JComponent implements ComponentListener {
      * Вызывать только после add
      */
     public void countTheSize() {
-        FRPuzzlePanel parent =  (FRPuzzlePanel)getParent();
+        FPPuzzlePanel parent =  (FPPuzzlePanel)getParent();
         if (parent != null) {
             componentWidth = parent.getWidth() / (int)Math.sqrt(parent.getPuzzle().getSize());
             componentHeight = parent.getHeight() / (int)Math.sqrt(parent.getPuzzle().getSize()) ;
