@@ -36,6 +36,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
 
     public void setParent(MainFrame parent) {
         this.parent = parent;
+        parent.resetStepsCount();
     }
 
     public void fillPaneSortedByPosition(){
@@ -138,6 +139,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
         repaint();
     }
 
+    //region Shutters
     @Override
     public void mouseReleased(MouseEvent e) {
         //Shutter
@@ -152,6 +154,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
     public void mouseExited(MouseEvent e) {
         //Shutter
     }
+    //endregion of Shutters
 
     //endregion of MouseListener methods
 
@@ -165,6 +168,7 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
 
     }
 
+    //region Shutters
     @Override
     public void componentMoved(ComponentEvent e) {
         //Затычка
@@ -179,15 +183,12 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
     public void componentHidden(ComponentEvent e) {
         //Затычка
     }
+    //endregion Shutters
 
     //endregion ComponentListener methods
 
 
     //region KeyListener methods
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -249,8 +250,18 @@ public class FRPuzzlePanel extends JPanel implements MouseListener, ComponentLis
 
     }
 
+
+    //region Shutters
     @Override
-    public void keyReleased(KeyEvent e) {}
+    public void keyReleased(KeyEvent e) {
+        //shutter
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        //shutter
+    }
+    //endregion Shutters
 
     //endregion KeyListener methods
 }

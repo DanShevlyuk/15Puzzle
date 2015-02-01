@@ -6,6 +6,7 @@ import serializer.Serializer;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.io.File;
 
@@ -245,7 +246,8 @@ public class MainFrame extends JFrame implements WinEventListener {
             String time = serializer.getTime();
             stopWatchUpdater.setTime(time);
             stopwatch.setText(time);
-            stepsCounter.setText(String.valueOf(puzzlePanel.getPuzzle().getSteps()));
+            int intSteps = puzzlePanel.getPuzzle().getSteps();
+            stepsCounter.setText(String.valueOf(intSteps));
         }
 
         contentPanel.add(toolPanel);
@@ -263,6 +265,10 @@ public class MainFrame extends JFrame implements WinEventListener {
         this.stepsCounter.setText(text);
     }
 
+    public void resetStepsCount() {
+        this.stepsCounter.setText("0");
+    }
+
 
     public void startNewGame() {
         timer.stop();
@@ -272,9 +278,10 @@ public class MainFrame extends JFrame implements WinEventListener {
             contentPanel.add(toolPanel);
         }
         buildPuzzlePanel(null);
-        stepsCounter.setText("0");
+        resetStepsCount();
         stopwatch.setText("00:00:00");
         contentPanel.repaint();
+        repaint();
     }
 
     public static void main(String[] args) {
@@ -318,7 +325,7 @@ public class MainFrame extends JFrame implements WinEventListener {
             setContentPane(contentPanel);
             buttonPanel = new JPanel();
             JButton newGameButton = new JButton("New Game");
-            JButton exitButton = new JButton("Exit");
+            JButton exitButton = new JButton("Quite");
             JLabel label = new JLabel("You are awesome! Wanna play more?");
 
             buttonPanel.add(newGameButton);

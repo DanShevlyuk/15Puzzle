@@ -38,19 +38,24 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
     }
 
     private void puzzleShuffle() {
-        // make 50*4 = 200 random steps for 4x4
-        // 300 for 6x6
-        // 400 for 8x8
-        // and 500 for 10x10
+        /*
+         * make 50*4 = 200 random steps for 4x4
+         * 300 for 6x6
+         * 400 for 8x8
+         * and 500 for 10x10
+         */
         for (int i = 0; i < 50 * puzzleSize; i++) {
             ArrayList<Integer> directions = new ArrayList<>();
             ArrayList<Integer> resultDir = new ArrayList<>();
 
+            //get all cells around the empty
             directions.add(getLeftIndexFromEmpty());
             directions.add(getDownFromEmpty());
             directions.add(getRightIndexFromEmpty());
             directions.add(getUpFromEmpty());
 
+            //if there are no cells to move (a.g. on the left)
+            //thous indexes equals -1
             for (int k = 0; k < directions.size(); k++) {
                 if (directions.get(k) != -1) {
                     resultDir.add(directions.get(k));
@@ -59,10 +64,7 @@ public class FPPuzzle implements Iterable<FPCell>, Serializable {
 
             //get random index from array
             int whichToMove = RANDOM.nextInt(resultDir.size());
-
-            System.out.println("whichToMove  >> " + whichToMove);
-            System.out.println("directions.get(whichToMove)  >> " + resultDir.get(whichToMove));
-
+            //move it
             moveMePlease(resultDir.get(whichToMove));
         }
     }
