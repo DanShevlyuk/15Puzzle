@@ -319,6 +319,7 @@ public class MainFrame extends JFrame implements WinEventListener {
 
         public DialogWindow(final MainFrame owner) {
             super(owner, "Congratulations", true);
+            owner.timer.stop();
 
             contentPanel = new JPanel();
             setContentPane(contentPanel);
