@@ -113,6 +113,28 @@ public class FPPuzzlePanel extends JPanel implements MouseListener, ComponentLis
         makeCellViewsResizable();
     }
 
+    private void moveCell(int cellIndex) {
+        if (cellIndex == -1) {
+            return;
+        } else {
+            if (puzzle.moveMePlease(cellIndex)) {
+                fillPaneSortedByPosition();
+                if (puzzle.isComplete()) {
+                    notifyAboutWin();
+                }
+            }
+        }
+        updateUI();
+
+        // update steps counter and timer
+        parent.setCountLabel("" + puzzle.getSteps());
+        if (!stopWatchIsRunning) {
+            parent.runStopWatch();
+            stopWatchIsRunning = true;
+        }
+        repaint();
+    }
+
     //region MouseListener methods
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -122,25 +144,7 @@ public class FPPuzzlePanel extends JPanel implements MouseListener, ComponentLis
     @Override
     public void mousePressed(MouseEvent e) {
         FPCellView clickedCell = (FPCellView)e.getComponent();
-
-        //debugging stuff
-        System.out.println("Clicked " + clickedCell.getModelValue());
-        System.out.println("Pos " + clickedCell.getModelPosition());
-
-        int moveMe = clickedCell.getModelPosition();
-        if (puzzle.moveMePlease(moveMe)) {
-            fillPaneSortedByPosition();
-            if (puzzle.isComplete()){
-                notifyAboutWin();
-            }
-        }
-        updateUI();
-        parent.setCountLabel("" + puzzle.getSteps());
-        if (!stopWatchIsRunning) {
-            parent.runStopWatch();
-            stopWatchIsRunning = true;
-        }
-        repaint();
+        moveCell(clickedCell.getModelPosition());
     }
 
     //region Shutters
@@ -226,31 +230,7 @@ public class FPPuzzlePanel extends JPanel implements MouseListener, ComponentLis
             default:
                 return;
         }
-
-        if (moveMe == -1) {
-            return;
-        } else {
-            //debugging stuff
-            System.out.println("move to >>> " + moveMe);
-
-            if (puzzle.moveMePlease(moveMe)) {
-                fillPaneSortedByPosition();
-                if (puzzle.isComplete()) {
-                    notifyAboutWin();
-                }
-            }
-        }
-
-        updateUI();
-
-        // update steps counter and timer
-        parent.setCountLabel("" + puzzle.getSteps());
-        if (!stopWatchIsRunning) {
-            parent.runStopWatch();
-            stopWatchIsRunning = true;
-        }
-        repaint();
-
+        moveCell(moveMe);
     }
 
 
