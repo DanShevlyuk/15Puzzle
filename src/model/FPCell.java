@@ -2,6 +2,9 @@ package model;
 
 import java.io.Serializable;
 
+/*
+ * Puzzle cell model
+ */
 public class FPCell implements Comparable<FPCell>, Serializable {
     private int value;
     private boolean isEmpty;
