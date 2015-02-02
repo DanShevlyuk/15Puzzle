@@ -23,7 +23,7 @@ public class FPPuzzlePanel extends JPanel implements MouseListener, ComponentLis
         listener = list;
     }
 
-    // best method ever made
+    // call me to win!
     public void notifyAboutWin() {
         listener.youWon();
     }
@@ -121,11 +121,14 @@ public class FPPuzzlePanel extends JPanel implements MouseListener, ComponentLis
 
     @Override
     public void mousePressed(MouseEvent e) {
-        FPCellView cellClicked = (FPCellView)e.getComponent();
-        System.out.println("Clicked " + cellClicked.getModelValue());
-        System.out.println("Pos " + cellClicked.getModelPosition());
-        int moveMe = cellClicked.getModelPosition();
-        if (puzzle.moveMePlease(moveMe)){
+        FPCellView clickedCell = (FPCellView)e.getComponent();
+
+        //debugging stuff
+        System.out.println("Clicked " + clickedCell.getModelValue());
+        System.out.println("Pos " + clickedCell.getModelPosition());
+
+        int moveMe = clickedCell.getModelPosition();
+        if (puzzle.moveMePlease(moveMe)) {
             fillPaneSortedByPosition();
             if (puzzle.isComplete()){
                 notifyAboutWin();
@@ -195,6 +198,7 @@ public class FPPuzzlePanel extends JPanel implements MouseListener, ComponentLis
     public void keyPressed(KeyEvent e) {
         int moveMe;
 
+        // debugging stuff
         System.out.println("Key pressed code=" + e.getKeyCode());
         System.out.println("empty >>> " + puzzle.getEmptyCellIndex());
 
@@ -226,22 +230,20 @@ public class FPPuzzlePanel extends JPanel implements MouseListener, ComponentLis
         if (moveMe == -1) {
             return;
         } else {
+            //debugging stuff
             System.out.println("move to >>> " + moveMe);
+
             if (puzzle.moveMePlease(moveMe)) {
                 fillPaneSortedByPosition();
                 if (puzzle.isComplete()) {
                     notifyAboutWin();
                 }
             }
-            updateUI();
-            parent.setCountLabel("" + puzzle.getSteps());
-            repaint();
-
-            //DRY??? WHTA FUCK IS THAT?
         }
 
-
         updateUI();
+
+        // update steps counter and timer
         parent.setCountLabel("" + puzzle.getSteps());
         if (!stopWatchIsRunning) {
             parent.runStopWatch();
