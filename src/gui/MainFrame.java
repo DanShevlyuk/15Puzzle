@@ -325,13 +325,17 @@ public class MainFrame extends JFrame implements WinEventListener {
             setContentPane(contentPanel);
             buttonPanel = new JPanel();
             JButton newGameButton = new JButton("New Game");
-            JButton exitButton = new JButton("Quite");
+            JButton exitButton = new JButton("Quit");
             JLabel label = new JLabel("You are awesome! Wanna play more?");
+            JLabel beebs = new JLabel();
+            ImageIcon beebsIcon = new ImageIcon("src/gui/beebs.jpg");
+            beebs.setIcon(beebsIcon);
 
             buttonPanel.add(newGameButton);
             buttonPanel.add(exitButton);
             contentPanel.add(label, BorderLayout.CENTER);
             contentPanel.add(buttonPanel, BorderLayout.SOUTH);
+            contentPanel.add(beebs, BorderLayout.NORTH);
 
 
             newGameButton.addActionListener(new ActionListener() {
